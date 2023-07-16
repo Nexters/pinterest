@@ -1,16 +1,26 @@
 package main
 
 import (
+	"github.com/Nexters/pinterest/interfaces/config"
 	"github.com/Nexters/pinterest/interfaces/controllers"
+	"github.com/Nexters/pinterest/interfaces/database"
 	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
 	app := fiber.New()
+	settings := config.NewSettings()
 
-	// TODO: routing 분리
-	rc := controllers.NewRootController()
-	app.Get("/", rc.Alive)
+	// create controllers with route groups
+	root := controllers.NewRootController(app.Group("/"))
+	user := controllers.NewUserController(app.Group("/user"))
+
+	// bind routes
+	controllers.BindRoutes(root, user)
+
+	// Database
+	db := database.NewDatabase(database.SQLiteDialector(settings))
+	db.Init()
 
 	app.Listen(":8080")
 }

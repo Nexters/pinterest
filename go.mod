@@ -3,7 +3,10 @@ module github.com/Nexters/pinterest
 go 1.20
 
 require (
+	github.com/Netflix/go-env v0.0.0-20220526054621-78278af1949d
 	github.com/gofiber/fiber/v2 v2.47.0
+	github.com/rs/zerolog v1.29.1
+	gorm.io/driver/sqlite v1.5.2
 	gorm.io/gorm v1.25.2
 )
 
@@ -16,6 +19,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
+	github.com/mattn/go-sqlite3 v1.14.17 // indirect
 	github.com/philhofer/fwd v1.1.2 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/savsgio/dictpool v0.0.0-20221023140959-7bf2e61cea94 // indirect
