@@ -19,7 +19,7 @@ func main() {
 	controllers.BindRoutes(root, user)
 
 	// Database
-	db := database.NewDatabase(database.SQLiteDialector(settings))
+	db := database.NewDatabase(database.MySQLDialector(settings))
 	db.Init()
 
 	app.Listen(":8080")
