@@ -24,8 +24,8 @@ func NewDatabase(dialector gorm.Dialector) *Database {
 
 func (db *Database) Init() {
 	db.AutoMigrate(
-		&entities.Group{},
 		&entities.User{},
+		&entities.Group{},
 		&entities.Item{},
 		&entities.VisitLog{},
 	)

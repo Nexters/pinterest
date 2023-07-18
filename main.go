@@ -20,6 +20,7 @@ func main() {
 
 	// Database
 	db := database.NewDatabase(database.MySQLDialector(settings))
+
 	db.Init()
 
 	app.Listen(":8080")
