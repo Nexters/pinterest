@@ -22,3 +22,11 @@ func (ur *UserRepository) FindAllUsers(ctx context.Context) (users []User, err e
 	}
 	return
 }
+
+func (ur *UserRepository) SaveUser(ctx context.Context, user *User) error {
+	result := ur.DB.Create(user)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
