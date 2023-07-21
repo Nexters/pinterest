@@ -3,7 +3,7 @@ package controllers
 import (
 	"strconv"
 
-	"github.com/Nexters/pinterest/domains/entities"
+	"github.com/Nexters/pinterest/domains/dto"
 	"github.com/Nexters/pinterest/domains/usecases"
 	"github.com/gofiber/fiber/v2"
 )
@@ -48,20 +48,16 @@ func (u *User) getUser(c *fiber.Ctx) error {
 }
 
 func (u *User) saveUser(c *fiber.Ctx) error {
-	user := &entities.User{
-		Name:       "맹",
-		Password:   "1234",
-		Email:      "asdf123@naver.com",
-		PageUrl:    "thisispageUrl",
-		Visitors:   10,
-		ThemeColor: "#FFFFFF",
-		Text:       "너무 더워효",
-	}
-
-	err := u.svc.CreateUser(c.Context(), user)
+	var userCreationRequest dto.UserCreationRequest
+	err := c.BodyParser(&userCreationRequest)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	return c.SendString("저장 완료")
+	userDto, err := u.svc.CreateUser(c.Context(), userCreationRequest)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(userDto)
 }

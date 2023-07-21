@@ -40,8 +40,8 @@ func (ur *UserRepository) FindUser(ctx context.Context, userId int) (user User, 
 	return user, nil
 }
 
-func (ur *UserRepository) SaveUser(ctx context.Context, user *User) error {
-	tx := ur.DB.Create(user)
+func (ur *UserRepository) SaveUser(ctx context.Context, user User) error {
+	tx := ur.DB.Create(&user)
 	if tx.Error != nil {
 		return tx.Error
 	}

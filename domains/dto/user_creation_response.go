@@ -1,6 +1,6 @@
 package dto
 
 type UserCreationResponse struct {
-	Name  string
-	Email string
+	Name    string
+	PageUrl string
 }

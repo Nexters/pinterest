@@ -40,6 +40,21 @@ func (u *UserService) FindByUserId(ctx context.Context, userId int) (userRespons
 	return userResponse, nil
 }
 
-func (u *UserService) CreateUser(ctx context.Context, user *entities.User) error {
-	return u.repo.SaveUser(ctx, user)
+func (u *UserService) CreateUser(ctx context.Context, userCreationRequest dto.UserCreationRequest) (userResponse dto.UserCreationResponse, err error) {
+	user := entities.User{
+		Name:     userCreationRequest.Name,
+		Password: userCreationRequest.Password,
+		PageUrl:  userCreationRequest.PageUrl,
+	}
+
+	err = u.repo.SaveUser(ctx, user)
+	if err != nil {
+		return
+	}
+
+	userResponse = dto.UserCreationResponse{
+		Name:    user.Name,
+		PageUrl: user.PageUrl,
+	}
+	return userResponse, nil
 }
