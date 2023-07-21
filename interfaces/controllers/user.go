@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"strconv"
+
 	"github.com/Nexters/pinterest/domains/entities"
 	"github.com/Nexters/pinterest/domains/usecases"
 	"github.com/gofiber/fiber/v2"
@@ -31,8 +33,18 @@ func (u *User) getAllUsers(c *fiber.Ctx) error {
 }
 
 func (u *User) getUser(c *fiber.Ctx) error {
-	userId := c.Params("userId")
-	return c.SendString(userId)
+	userIdStr := c.Params("userId")
+	userId, err := strconv.Atoi(userIdStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	userDto, err := u.svc.FindByUserId(c.Context(), userId)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(userDto)
 }
 
 func (u *User) saveUser(c *fiber.Ctx) error {
@@ -50,5 +62,6 @@ func (u *User) saveUser(c *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
+
 	return c.SendString("저장 완료")
 }
