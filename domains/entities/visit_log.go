@@ -5,8 +5,8 @@ import "gorm.io/gorm"
 type VisitLog struct {
 	gorm.Model
 	UserID uint
-	name   string
-	text   string
+	Name   string
+	Text   string
 }
 
 func (VisitLog) tableName() string {
