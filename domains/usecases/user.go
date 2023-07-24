@@ -44,11 +44,6 @@ func (u *UserService) FindByUserId(ctx context.Context, userId int) (userRespons
 		ThemeColor: user.ThemeColor,
 		Text:       user.Text,
 	}
-	validate := validator.New()
-	err = validate.Struct(userResponse)
-	if err != nil {
-		return
-	}
 	return
 }
 
@@ -72,11 +67,6 @@ func (u *UserService) CreateUser(ctx context.Context, userCreationRequest dto.Us
 		ThemeColor: savedUser.ThemeColor,
 		Text:       savedUser.Text,
 		CreatedAt:  savedUser.CreatedAt,
-	}
-	validate := validator.New()
-	err = validate.Struct(userResponse)
-	if err != nil {
-		return
 	}
 	return
 }
