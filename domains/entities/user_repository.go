@@ -3,6 +3,7 @@ package entities
 import (
 	"context"
 
+	"github.com/Nexters/pinterest/domains/errors"
 	"gorm.io/gorm"
 )
 
@@ -20,5 +21,29 @@ func (ur *UserRepository) FindAllUsers(ctx context.Context) (users []User, err e
 		err = tx.Error
 		return
 	}
+
 	return
+}
+
+func (ur *UserRepository) FindUser(ctx context.Context, userId int) (user User, err error) {
+	tx := ur.DB.First(&user, userId)
+	if tx.RowsAffected == 0 {
+		err = errors.NewNotFoundError("User")
+		return
+	}
+	if tx.Error != nil {
+		err = tx.Error
+		return
+	}
+
+	return
+}
+
+func (ur *UserRepository) SaveUser(ctx context.Context, user User) (User, error) {
+	tx := ur.DB.Create(&user)
+	if tx.Error != nil {
+		return user, errors.NewCreateFailedError("User")
+	}
+
+	return user, nil
 }
