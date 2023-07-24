@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/Nexters/pinterest/domains/dto"
+	"github.com/Nexters/pinterest/domains/errors"
 	"github.com/Nexters/pinterest/domains/usecases"
 	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
@@ -42,7 +43,12 @@ func (u *User) getUser(c *fiber.Ctx) error {
 
 	userDto, err := u.svc.FindByUserId(c.Context(), userId)
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *errors.NotFoundError:
+			return fiber.NewError(fiber.StatusNotFound, err.Error())
+		default:
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
 	}
 
 	return c.JSON(userDto)
@@ -52,14 +58,14 @@ func (u *User) saveUser(c *fiber.Ctx) error {
 	var userCreationRequest dto.UserCreationRequest
 	err := c.BodyParser(&userCreationRequest)
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
 	// UserCreationRequest 검증
 	validate := validator.New()
 	err = validate.Struct(userCreationRequest)
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
 	userDto, err := u.svc.CreateUser(c.Context(), userCreationRequest)

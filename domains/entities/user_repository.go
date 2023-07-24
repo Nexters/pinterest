@@ -28,7 +28,7 @@ func (ur *UserRepository) FindAllUsers(ctx context.Context) (users []User, err e
 func (ur *UserRepository) FindUser(ctx context.Context, userId int) (user User, err error) {
 	tx := ur.DB.First(&user, userId)
 	if tx.RowsAffected == 0 {
-		err = errors.NewNotFoundError()
+		err = errors.NewNotFoundError("User")
 		return
 	}
 	if tx.Error != nil {
@@ -36,13 +36,13 @@ func (ur *UserRepository) FindUser(ctx context.Context, userId int) (user User, 
 		return
 	}
 
-	return user, nil
+	return
 }
 
 func (ur *UserRepository) SaveUser(ctx context.Context, user User) error {
 	tx := ur.DB.Create(&user)
 	if tx.Error != nil {
-		return errors.NewCreateFailedError()
+		return errors.NewCreateFailedError("User")
 	}
 
 	return nil
