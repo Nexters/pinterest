@@ -1,6 +1,13 @@
 package dto
 
+import "time"
+
 type UserCreationResponse struct {
-	Name    string `json:"name"`
-	PageUrl string `json:"page_url"`
+	Name       string
+	PageUrl    string
+	Email      string
+	Visitors   uint
+	ThemeColor string
+	Text       string
+	CreatedAt  time.Time
 }

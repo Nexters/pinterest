@@ -59,14 +59,19 @@ func (u *UserService) CreateUser(ctx context.Context, userCreationRequest dto.Us
 		PageUrl:  userCreationRequest.PageUrl,
 	}
 
-	err = u.repo.SaveUser(ctx, user)
+	savedUser, err := u.repo.SaveUser(ctx, user)
 	if err != nil {
 		return
 	}
 
 	userResponse = dto.UserCreationResponse{
-		Name:    user.Name,
-		PageUrl: user.PageUrl,
+		Name:       savedUser.Name,
+		PageUrl:    savedUser.PageUrl,
+		Email:      savedUser.Email,
+		Visitors:   savedUser.Visitors,
+		ThemeColor: savedUser.ThemeColor,
+		Text:       savedUser.Text,
+		CreatedAt:  savedUser.CreatedAt,
 	}
 	validate := validator.New()
 	err = validate.Struct(userResponse)

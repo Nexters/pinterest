@@ -39,11 +39,11 @@ func (ur *UserRepository) FindUser(ctx context.Context, userId int) (user User, 
 	return
 }
 
-func (ur *UserRepository) SaveUser(ctx context.Context, user User) error {
+func (ur *UserRepository) SaveUser(ctx context.Context, user User) (User, error) {
 	tx := ur.DB.Create(&user)
 	if tx.Error != nil {
-		return errors.NewCreateFailedError("User")
+		return user, errors.NewCreateFailedError("User")
 	}
 
-	return nil
+	return user, nil
 }
