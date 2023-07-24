@@ -5,7 +5,6 @@ import (
 
 	"github.com/Nexters/pinterest/domains/dto"
 	"github.com/Nexters/pinterest/domains/entities"
-	"github.com/go-playground/validator"
 )
 
 type UserService struct {
