@@ -5,6 +5,7 @@ import (
 
 	"github.com/Nexters/pinterest/domains/dto"
 	"github.com/Nexters/pinterest/domains/entities"
+	"github.com/go-playground/validator"
 )
 
 type UserService struct {
@@ -26,8 +27,14 @@ func (u *UserService) FindByUserId(ctx context.Context, userId int) (userRespons
 		return
 	}
 
-	var groups []dto.Group = dto.ToGroupDtoList(user.Group)
-	var visitLogs []dto.VisitLog = dto.ToVisitLogDtoList(user.VisitLog)
+	groups, err := dto.ToGroupDtoList(user.Group)
+	if err != nil {
+		return
+	}
+	visitLogs, err := dto.ToVisitLogDtoList(user.VisitLog)
+	if err != nil {
+		return
+	}
 
 	userResponse = dto.UserDetailResponse{
 		Name:       user.Name,
@@ -37,7 +44,12 @@ func (u *UserService) FindByUserId(ctx context.Context, userId int) (userRespons
 		ThemeColor: user.ThemeColor,
 		Text:       user.Text,
 	}
-	return userResponse, nil
+	validate := validator.New()
+	err = validate.Struct(userResponse)
+	if err != nil {
+		return
+	}
+	return
 }
 
 func (u *UserService) CreateUser(ctx context.Context, userCreationRequest dto.UserCreationRequest) (userResponse dto.UserCreationResponse, err error) {
@@ -56,5 +68,10 @@ func (u *UserService) CreateUser(ctx context.Context, userCreationRequest dto.Us
 		Name:    user.Name,
 		PageUrl: user.PageUrl,
 	}
-	return userResponse, nil
+	validate := validator.New()
+	err = validate.Struct(userResponse)
+	if err != nil {
+		return
+	}
+	return
 }

@@ -2,8 +2,8 @@ package entities
 
 import (
 	"context"
-	"errors"
 
+	"github.com/Nexters/pinterest/domains/errors"
 	"gorm.io/gorm"
 )
 
@@ -25,11 +25,10 @@ func (ur *UserRepository) FindAllUsers(ctx context.Context) (users []User, err e
 	return
 }
 
-// tx: transaction 정보
 func (ur *UserRepository) FindUser(ctx context.Context, userId int) (user User, err error) {
 	tx := ur.DB.First(&user, userId)
 	if tx.RowsAffected == 0 {
-		err = errors.New("값이 없습니다")
+		err = errors.NewNotFoundError()
 		return
 	}
 	if tx.Error != nil {
@@ -43,7 +42,7 @@ func (ur *UserRepository) FindUser(ctx context.Context, userId int) (user User, 
 func (ur *UserRepository) SaveUser(ctx context.Context, user User) error {
 	tx := ur.DB.Create(&user)
 	if tx.Error != nil {
-		return tx.Error
+		return errors.NewCreateFailedError()
 	}
 
 	return nil

@@ -1,6 +1,6 @@
 package dto
 
 type UserCreationResponse struct {
-	Name    string
-	PageUrl string
+	Name    string `json:"name"`
+	PageUrl string `json:"page_url"`
 }
