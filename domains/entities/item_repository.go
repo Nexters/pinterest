@@ -27,3 +27,12 @@ func (ir *ItemRepository) FindItem(ctx context.Context, itemId uint) (item Item,
 	}
 	return
 }
+
+func (ir *ItemRepository) SaveItem(ctx context.Context, item Item) (Item, error) {
+	tx := ir.DB.Create(&item)
+	if tx.Error != nil {
+		return item, errors.NewCreateFailedError("Item")
+	}
+
+	return item, nil
+}

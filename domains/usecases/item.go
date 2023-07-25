@@ -30,6 +30,34 @@ func (i *ItemService) FindByItemId(ctx context.Context, itemId uint) (itemRespon
 		GroupID:   item.GroupID,
 		CreatedAt: item.CreatedAt,
 	}
-	// validate 로직 추가
+	return
+}
+
+func (i *ItemService) CreateItem(
+	ctx context.Context,
+	itemCreationRequest dto.ItemCreationRequest,
+) (itemResponse dto.ItemDetailResponse, err error) {
+	item := entities.Item{
+		Title:   itemCreationRequest.Title,
+		Text:    itemCreationRequest.Text,
+		Link:    itemCreationRequest.Link,
+		Image:   itemCreationRequest.Image,
+		GroupID: itemCreationRequest.GroupID,
+	}
+
+	savedItem, err := i.repo.SaveItem(ctx, item)
+	if err != nil {
+		return
+	}
+
+	itemResponse = dto.ItemDetailResponse{
+		Title:     savedItem.Title,
+		Text:      savedItem.Text,
+		Link:      savedItem.Link,
+		Image:     savedItem.Image,
+		Likes:     savedItem.Likes,
+		GroupID:   savedItem.GroupID,
+		CreatedAt: savedItem.CreatedAt,
+	}
 	return
 }
