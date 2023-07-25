@@ -12,6 +12,6 @@ func (e *NotFoundError) Error() string {
 
 func NewNotFoundError(entityName string) error {
 	return &NotFoundError{
-		Message: fmt.Sprintf("해당하는 %s를 찾을 수 없습니다.", entityName),
+		Message: fmt.Sprintf("해당하는 %s을(를) 찾을 수 없습니다.", entityName),
 	}
 }
