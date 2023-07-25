@@ -20,16 +20,19 @@ func main() {
 
 	// repository
 	userRepo := entities.NewUserRepository(db.DB)
+	itemRepo := entities.NewItemRepository(db.DB)
 
 	// usecases/services
 	userSvc := usecases.NewUserService(userRepo)
+	itemSvc := usecases.NewItemService(itemRepo)
 
 	// create controllers with route groups
 	root := controllers.NewRootController(app.Group("/"))
 	user := controllers.NewUserController(app.Group("/user"), userSvc)
+	item := controllers.NewItemController(app.Group("/item"), itemSvc)
 
 	// bind routes
-	controllers.BindRoutes(root, user)
+	controllers.BindRoutes(root, user, item)
 
 	app.Listen(":8080")
 }
