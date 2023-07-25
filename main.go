@@ -18,9 +18,11 @@ func main() {
 
 	// repository
 	userRepo := entities.NewUserRepository(db.DB)
+	itemRepo := entities.NewItemRepository(db.DB)
 
 	// usecases/services
 	userSvc := usecases.NewUserService(userRepo)
+	itemSvc := usecases.NewItemService(itemRepo)
 
 	// create controllers with route Films
 	root := controllers.NewRootController(app.Group("/"))
