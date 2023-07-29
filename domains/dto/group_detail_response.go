@@ -1,6 +1,7 @@
 package dto
 
 type GroupDetailResponse struct {
+	GroupID   uint                 `json:"group_id"`
 	Type      string               `json:"type"`
 	Title     string               `json:"title"`
 	Text      string               `json:"text"`

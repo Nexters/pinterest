@@ -27,3 +27,11 @@ func (gr *GroupRepository) FindGroup(ctx context.Context, groupId uint) (group G
 	}
 	return
 }
+
+func (gr *GroupRepository) SaveGroup(ctx context.Context, group Group) (Group, error) {
+	tx := gr.DB.Create(&group)
+	if tx.Error != nil {
+		return group, customerrors.NewCreateFailedError("Group")
+	}
+	return group, nil
+}
