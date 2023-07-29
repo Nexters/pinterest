@@ -26,7 +26,7 @@ func (ur *UserRepository) FindAllUsers(ctx context.Context) (users []User, err e
 }
 
 func (ur *UserRepository) FindUser(ctx context.Context, userId string) (user User, err error) {
-	tx := ur.DB.First(&user, userId)
+	tx := ur.DB.Where("user_id = ?", userId).First(&user)
 	if tx.RowsAffected == 0 {
 		err = errors.NewNotFoundError("User")
 		return
