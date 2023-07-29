@@ -34,9 +34,10 @@ func (a *Auth) login(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	err = a.svc.LoginUser(c.Context(), *dto)
+	userDetail, err := a.svc.LoginUser(c.Context(), *dto)
 	if err != nil {
 		return fiber.NewError(fiber.StatusUnauthorized, err.Error())
 	}
-	return c.SendString("ok")
+
+	return c.JSON(userDetail)
 }

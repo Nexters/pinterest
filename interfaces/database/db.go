@@ -12,7 +12,7 @@ type Database struct {
 
 // NewDatabase 생성자
 func NewDatabase(dialector gorm.Dialector) *Database {
-	config := gorm.Config{}
+	config := gorm.Config{TranslateError: true}
 	db, err := gorm.Open(dialector, &config)
 
 	if err != nil {
@@ -25,8 +25,8 @@ func NewDatabase(dialector gorm.Dialector) *Database {
 func (db *Database) Init() {
 	db.AutoMigrate(
 		&entities.User{},
-		&entities.Group{},
-		&entities.Item{},
+		&entities.Film{},
+		&entities.PhotoCut{},
 		&entities.VisitLog{},
 	)
 }

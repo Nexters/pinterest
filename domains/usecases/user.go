@@ -24,9 +24,8 @@ func (u *UserService) FindAll(ctx context.Context) (users []entities.User, err e
 func (u *UserService) CreateUser(ctx context.Context, userCreationRequest dto.UserCreationRequest) (userResponse dto.UserCreationResponse, err error) {
 	user := entities.User{
 		Name:     userCreationRequest.Name,
-		UserID:   userCreationRequest.UserID,
+		ID:       userCreationRequest.UserID,
 		Password: userCreationRequest.Password,
-		PageUrl:  userCreationRequest.PageUrl,
 	}
 
 	savedUser, err := u.repo.SaveUser(ctx, user)
@@ -36,7 +35,6 @@ func (u *UserService) CreateUser(ctx context.Context, userCreationRequest dto.Us
 
 	userResponse = dto.UserCreationResponse{
 		Name:       savedUser.Name,
-		PageUrl:    savedUser.PageUrl,
 		Email:      savedUser.Email,
 		Visitors:   savedUser.Visitors,
 		ThemeColor: savedUser.ThemeColor,
@@ -46,15 +44,27 @@ func (u *UserService) CreateUser(ctx context.Context, userCreationRequest dto.Us
 	return
 }
 
-func (u *UserService) LoginUser(ctx context.Context, dto dto.UserLoginRequest) error {
+func (u *UserService) FindUserByID(ctx context.Context, userID string) (userDetail dto.UserDetailResponse, err error) {
+	return
+}
+
+func (u *UserService) LoginUser(ctx context.Context, loginDto dto.UserLoginRequest) (userDetail dto.UserDetailResponse, err error) {
 	// find user with id and password
-	user, err := u.repo.FindUser(ctx, dto.UserID)
+	user, err := u.repo.FindUser(ctx, loginDto.UserID)
 	if err != nil {
-		return err
+		return
 	}
 
-	if user.Password != dto.Password {
-		return errors.NewUnauthorizedError()
+	if user.Password != loginDto.Password {
+		err = errors.NewUnauthorizedError()
+		return
 	}
-	return nil
+
+	userDetail = dto.UserDetailResponse{
+		Name:     user.Name,
+		Text:     user.Text,
+		Profile:  user.Profile,
+		Visitors: user.Visitors,
+	}
+	return
 }

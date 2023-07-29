@@ -16,15 +16,13 @@ func main() {
 	// Database
 	db := database.NewDatabase(database.MySQLDialector(settings))
 
-	db.Init()
-
 	// repository
 	userRepo := entities.NewUserRepository(db.DB)
 
 	// usecases/services
 	userSvc := usecases.NewUserService(userRepo)
 
-	// create controllers with route groups
+	// create controllers with route Films
 	root := controllers.NewRootController(app.Group("/"))
 	user := controllers.NewUserController(app.Group("/user"), userSvc)
 	auth := controllers.NewAuthController(app.Group("/auth"), userSvc)

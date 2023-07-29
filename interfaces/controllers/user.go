@@ -5,6 +5,7 @@ import (
 	"github.com/Nexters/pinterest/domains/usecases"
 	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 type User struct {
@@ -36,6 +37,7 @@ func (u *User) saveUser(c *fiber.Ctx) error {
 	err := c.BodyParser(&userCreationRequest)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+
 	}
 
 	// UserCreationRequest 검증
@@ -47,7 +49,12 @@ func (u *User) saveUser(c *fiber.Ctx) error {
 
 	userDto, err := u.svc.CreateUser(c.Context(), userCreationRequest)
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		switch err {
+		case gorm.ErrDuplicatedKey:
+			return fiber.NewError(fiber.StatusConflict, err.Error())
+		default:
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
 	}
 
 	return c.JSON(userDto)
