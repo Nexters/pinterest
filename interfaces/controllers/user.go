@@ -1,10 +1,7 @@
 package controllers
 
 import (
-	"strconv"
-
 	"github.com/Nexters/pinterest/domains/dto"
-	"github.com/Nexters/pinterest/domains/errors"
 	"github.com/Nexters/pinterest/domains/usecases"
 	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
@@ -21,7 +18,7 @@ func NewUserController(router fiber.Router, svc *usecases.UserService) RouteBind
 
 func (u *User) Bind() {
 	u.router.Get("", u.getAllUsers)
-	u.router.Get("/:userId", u.getUser)
+	// u.router.Get("/:userId", u.getUser)
 	u.router.Post("", u.saveUser)
 }
 
@@ -32,26 +29,6 @@ func (u *User) getAllUsers(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(users)
-}
-
-func (u *User) getUser(c *fiber.Ctx) error {
-	userIdStr := c.Params("userId")
-	userId, err := strconv.Atoi(userIdStr)
-	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
-	}
-
-	userDto, err := u.svc.FindByUserId(c.Context(), userId)
-	if err != nil {
-		switch err.(type) {
-		case *errors.NotFoundError:
-			return fiber.NewError(fiber.StatusNotFound, err.Error())
-		default:
-			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
-		}
-	}
-
-	return c.JSON(userDto)
 }
 
 func (u *User) saveUser(c *fiber.Ctx) error {

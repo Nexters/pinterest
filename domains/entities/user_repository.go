@@ -25,7 +25,7 @@ func (ur *UserRepository) FindAllUsers(ctx context.Context) (users []User, err e
 	return
 }
 
-func (ur *UserRepository) FindUser(ctx context.Context, userId int) (user User, err error) {
+func (ur *UserRepository) FindUser(ctx context.Context, userId string) (user User, err error) {
 	tx := ur.DB.First(&user, userId)
 	if tx.RowsAffected == 0 {
 		err = errors.NewNotFoundError("User")
