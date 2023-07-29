@@ -6,7 +6,7 @@ type Film struct {
 	Text          string `json:"text"`
 	Image         string `json:"image"`
 	Order         uint   `json:"order"`
-	PhotoCutCount uint   `json:"PhotoCut_count" validate:"gte=0"`
+	PhotoCutCount uint   `json:"photo_cut_count" validate:"gte=0"`
 	Likes         uint   `json:"likes" validate:"gte=0"`
 	Link          string `json:"link"`
 	UserID        string `json:"user_id"`
