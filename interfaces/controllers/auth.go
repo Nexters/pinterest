@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/Nexters/pinterest/domains/dto"
 	"github.com/Nexters/pinterest/domains/usecases"
+	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -22,6 +23,13 @@ func (a *Auth) Bind() {
 func (a *Auth) login(c *fiber.Ctx) error {
 	dto := new(dto.UserLoginRequest)
 	err := c.BodyParser(&dto)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	// validate
+	validate := validator.New()
+	err = validate.Struct(dto)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}

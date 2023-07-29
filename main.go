@@ -27,9 +27,10 @@ func main() {
 	// create controllers with route groups
 	root := controllers.NewRootController(app.Group("/"))
 	user := controllers.NewUserController(app.Group("/user"), userSvc)
+	auth := controllers.NewAuthController(app.Group("/auth"), userSvc)
 
 	// bind routes
-	controllers.BindRoutes(root, user)
+	controllers.BindRoutes(root, user, auth)
 
 	app.Listen(":8080")
 }
