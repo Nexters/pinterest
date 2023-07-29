@@ -40,3 +40,19 @@ func ToVisitLogDtoList(visitLogList []entities.VisitLog) (visitLogDtoList []Visi
 	}
 	return
 }
+
+func ToItemDtoList(itemList []entities.Item) (itemDtoList []ItemDetailResponse, err error) {
+	for _, item := range itemList {
+		itemDetail := ItemDetailResponse{
+			Title:     item.Title,
+			Text:      item.Text,
+			Link:      item.Link,
+			Image:     item.Image,
+			Likes:     item.Likes,
+			GroupID:   item.GroupID,
+			CreatedAt: item.CreatedAt,
+		}
+		itemDtoList = append(itemDtoList, itemDetail)
+	}
+	return
+}
