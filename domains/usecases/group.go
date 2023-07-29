@@ -29,7 +29,7 @@ func (g *GroupService) FindByGroupId(ctx context.Context, groupId uint) (groupDe
 		GroupID:   group.ID,
 		Title:     group.Title,
 		Order:     group.Order,
-		ItemCount: group.ItemCount,
+		ItemCount: uint(len(group.Items)),
 		Likes:     group.Likes,
 		UserID:    group.UserID,
 		Items:     items,
