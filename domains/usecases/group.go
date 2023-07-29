@@ -27,14 +27,10 @@ func (g *GroupService) FindByGroupId(ctx context.Context, groupId uint) (groupDe
 
 	groupDetailResponse = dto.GroupDetailResponse{
 		GroupID:   group.ID,
-		Type:      group.Type,
 		Title:     group.Title,
-		Text:      group.Text,
-		Image:     group.Image,
 		Order:     group.Order,
 		ItemCount: group.ItemCount,
 		Likes:     group.Likes,
-		Link:      group.Link,
 		UserID:    group.UserID,
 		Items:     items,
 	}
@@ -42,8 +38,15 @@ func (g *GroupService) FindByGroupId(ctx context.Context, groupId uint) (groupDe
 }
 
 func (g *GroupService) CreateGroup(ctx context.Context, groupCreationRequest dto.GroupCreationRequest) (groupDetailResponse dto.GroupDetailResponse, err error) {
+	order, err := g.repo.CountOrderByUserId(ctx, groupCreationRequest.UserID)
+	if err != nil {
+		return
+	}
+
 	group := entities.Group{
-		Title: groupCreationRequest.Title,
+		Title:  groupCreationRequest.Title,
+		UserID: groupCreationRequest.UserID,
+		Order:  uint(order),
 	}
 
 	savedGroup, err := g.repo.SaveGroup(ctx, group)
@@ -52,15 +55,11 @@ func (g *GroupService) CreateGroup(ctx context.Context, groupCreationRequest dto
 	}
 
 	groupDetailResponse = dto.GroupDetailResponse{
-		GroupID:   group.ID,
-		Type:      savedGroup.Type,
+		GroupID:   savedGroup.ID,
 		Title:     savedGroup.Title,
-		Text:      savedGroup.Text,
-		Image:     savedGroup.Image,
 		Order:     savedGroup.Order,
 		ItemCount: savedGroup.ItemCount,
 		Likes:     savedGroup.Likes,
-		Link:      savedGroup.Link,
 		UserID:    savedGroup.UserID,
 	}
 	return

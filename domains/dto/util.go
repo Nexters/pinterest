@@ -5,6 +5,7 @@ import (
 	"github.com/go-playground/validator"
 )
 
+<<<<<<< HEAD
 func ToFilmDtoList(FilmList []entities.Film) (FilmDtoList []Film, err error) {
 	for _, film := range FilmList {
 		FilmInfo := Film{
@@ -13,6 +14,16 @@ func ToFilmDtoList(FilmList []entities.Film) (FilmDtoList []Film, err error) {
 			PhotoCutCount: film.PhotoCutCount,
 			Likes:         film.Likes,
 			UserID:        film.UserID,
+=======
+func ToGroupDtoList(groupList []entities.Group) (groupDtoList []Group, err error) {
+	for _, group := range groupList {
+		groupInfo := Group{
+			Title:     group.Title,
+			Order:     group.Order,
+			ItemCount: group.ItemCount,
+			Likes:     group.Likes,
+			UserID:    group.UserID,
+>>>>>>> 77d1ae9 (feat: add group)
 		}
 		validate := validator.New()
 		err := validate.Struct(FilmInfo)

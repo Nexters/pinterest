@@ -28,6 +28,14 @@ func (gr *GroupRepository) FindGroup(ctx context.Context, groupId uint) (group G
 	return
 }
 
+func (gr *GroupRepository) CountOrderByUserId(ctx context.Context, userId string) (count int64, err error) {
+	tx := gr.DB.Model(&Group{}).Where("user_id = ?", userId).Count(&count)
+	if tx.Error != nil {
+		return
+	}
+	return
+}
+
 func (gr *GroupRepository) SaveGroup(ctx context.Context, group Group) (Group, error) {
 	tx := gr.DB.Create(&group)
 	if tx.Error != nil {
