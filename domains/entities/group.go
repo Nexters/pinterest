@@ -8,7 +8,7 @@ type Group struct {
 	Order     uint   `gorm:"not null"`
 	ItemCount uint
 	Likes     uint
-	UserID    uint
+	UserID    string
 	Items     []Item
 }
 
