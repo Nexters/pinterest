@@ -14,6 +14,7 @@ type GroupService struct {
 func NewGroupService(repo *entities.GroupRepository) *GroupService {
 	return &GroupService{repo}
 }
+
 func (g *GroupService) FindByGroupId(ctx context.Context, groupId uint) (groupDetailResponse dto.GroupDetailResponse, err error) {
 	group, err := g.repo.FindGroup(ctx, groupId)
 	if err != nil {
@@ -61,6 +62,19 @@ func (g *GroupService) CreateGroup(ctx context.Context, groupCreationRequest dto
 		ItemCount: savedGroup.ItemCount,
 		Likes:     savedGroup.Likes,
 		UserID:    savedGroup.UserID,
+	}
+	return
+}
+
+func (g *GroupService) FindAllFilms(ctx context.Context, userId string) (filmList []dto.Group, err error) {
+	films, err := g.repo.FindAllFilmsInOrder(ctx, userId)
+	if err != nil {
+		return
+	}
+
+	filmList, err = dto.ToGroupDtoList(films)
+	if err != nil {
+		return
 	}
 	return
 }

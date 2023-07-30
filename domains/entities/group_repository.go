@@ -43,3 +43,12 @@ func (gr *GroupRepository) SaveGroup(ctx context.Context, group Group) (Group, e
 	}
 	return group, nil
 }
+
+func (gr *GroupRepository) FindAllFilmsInOrder(ctx context.Context, userId string) (films []Group, err error) {
+	tx := gr.DB.Where("user_id = ?", userId).Order("order DESC").Find(&films)
+	if tx.Error != nil {
+		err = tx.Error
+		return
+	}
+	return
+}

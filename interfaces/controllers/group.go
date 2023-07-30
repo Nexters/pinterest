@@ -64,3 +64,25 @@ func (g *Group) saveGroup(c *fiber.Ctx) error {
 
 	return c.JSON(itemDto)
 }
+
+func (g *Group) getAllGroups(c *fiber.Ctx) error {
+	dto := new(dto.GroupSelectionRequest)
+	err := c.BodyParser(&dto)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	// validate
+	validate := validator.New()
+	err = validate.Struct(dto)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	films, err := g.svc.FindAllFilms(c.Context(), dto.UserID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(films)
+}
