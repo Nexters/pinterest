@@ -18,29 +18,23 @@ func main() {
 
 	// repository
 	userRepo := entities.NewUserRepository(db.DB)
-	itemRepo := entities.NewItemRepository(db.DB)
-	groupRepo := entities.NewGroupRepository(db.DB)
+	photoCutRepo := entities.NewPhotoCutRepository(db.DB)
+	filmRepo := entities.NewFilmRepository(db.DB)
 
 	// usecases/services
 	userSvc := usecases.NewUserService(userRepo)
-	itemSvc := usecases.NewItemService(itemRepo)
-	groupSvc := usecases.NewGroupService(groupRepo)
+	photoCutSvc := usecases.NewPhotoCutService(photoCutRepo)
+	filmSvc := usecases.NewFilmService(filmRepo)
 
 	// create controllers with route Films
 	root := controllers.NewRootController(app.Group("/"))
 	user := controllers.NewUserController(app.Group("/user"), userSvc)
-<<<<<<< HEAD
 	auth := controllers.NewAuthController(app.Group("/auth"), userSvc)
+	photo_cut := controllers.NewPhotoCutController(app.Group("/photo-cut"), photoCutSvc)
+	film := controllers.NewFilmController(app.Group("/film"), filmSvc)
 
 	// bind routes
-	controllers.BindRoutes(root, user, auth)
-=======
-	item := controllers.NewItemController(app.Group("/item"), itemSvc)
-	group := controllers.NewGroupController(app.Group("/group"), groupSvc)
-
-	// bind routes
-	controllers.BindRoutes(root, user, item, group)
->>>>>>> 77d1ae9 (feat: add group)
+	controllers.BindRoutes(root, user, auth, photo_cut, film)
 
 	app.Listen(":8080")
 }
