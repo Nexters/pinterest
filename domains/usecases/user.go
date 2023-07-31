@@ -35,6 +35,7 @@ func (u *UserService) CreateUser(ctx context.Context, userCreationRequest dto.Us
 
 	userResponse = dto.UserCreationResponse{
 		Name:       savedUser.Name,
+		UserID:     savedUser.ID,
 		Email:      savedUser.Email,
 		Visitors:   savedUser.Visitors,
 		ThemeColor: savedUser.ThemeColor,
@@ -65,6 +66,7 @@ func (u *UserService) LoginUser(ctx context.Context, loginDto dto.UserLoginReque
 		Text:     user.Text,
 		Profile:  user.Profile,
 		Visitors: user.Visitors,
+		UserID:   user.ID,
 	}
 	return
 }

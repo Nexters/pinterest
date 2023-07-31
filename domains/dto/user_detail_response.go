@@ -2,7 +2,8 @@ package dto
 
 type UserDetailResponse struct {
 	Name     string `json:"name"`
-	Visitors uint   `json:"visitors" validate:"gte=0"`
+	UserID   string `json:"user_id"`
+	Visitors uint   `json:"visitors"`
 	Text     string `json:"text"`
 	Profile  string `gorm:"profile_img" json:"profile_img"`
 }

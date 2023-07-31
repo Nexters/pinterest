@@ -3,8 +3,8 @@ package dto
 import "time"
 
 type UserCreationResponse struct {
-	Name string
-	string
+	Name       string
+	UserID     string
 	Email      string
 	Visitors   uint
 	ThemeColor string
