@@ -7,57 +7,57 @@ import (
 	"github.com/Nexters/pinterest/domains/entities"
 )
 
-type ItemService struct {
-	repo *entities.ItemRepository
+type PhotoCutService struct {
+	repo *entities.PhotoCutRepository
 }
 
-func NewItemService(repo *entities.ItemRepository) *ItemService {
-	return &ItemService{repo}
+func NewPhotoCutService(repo *entities.PhotoCutRepository) *PhotoCutService {
+	return &PhotoCutService{repo}
 }
 
-func (i *ItemService) FindByItemId(ctx context.Context, itemId uint) (itemResponse dto.ItemDetailResponse, err error) {
-	item, err := i.repo.FindItem(ctx, itemId)
+func (i *PhotoCutService) FindByPhotoCutId(ctx context.Context, photoCutId uint) (photoCutResponse dto.PhotoCutDetailResponse, err error) {
+	photoCut, err := i.repo.FindPhotoCut(ctx, photoCutId)
 	if err != nil {
 		return
 	}
 
-	itemResponse = dto.ItemDetailResponse{
-		Title:     item.Title,
-		Text:      item.Text,
-		Link:      item.Link,
-		Image:     item.Image,
-		Likes:     item.Likes,
-		GroupID:   item.GroupID,
-		CreatedAt: item.CreatedAt,
+	photoCutResponse = dto.PhotoCutDetailResponse{
+		Title:     photoCut.Title,
+		Text:      photoCut.Text,
+		Link:      photoCut.Link,
+		Image:     photoCut.Image,
+		Likes:     photoCut.Likes,
+		FilmID:    photoCut.FilmID,
+		CreatedAt: photoCut.CreatedAt,
 	}
 	return
 }
 
-func (i *ItemService) CreateItem(
+func (i *PhotoCutService) CreatePhotoCut(
 	ctx context.Context,
-	itemCreationRequest dto.ItemCreationRequest,
-) (itemResponse dto.ItemDetailResponse, err error) {
-	item := entities.Item{
-		Title:   itemCreationRequest.Title,
-		Text:    itemCreationRequest.Text,
-		Link:    itemCreationRequest.Link,
-		Image:   itemCreationRequest.Image,
-		GroupID: itemCreationRequest.GroupID,
+	photoCutCreationRequest dto.PhotoCutCreationRequest,
+) (photoCutResponse dto.PhotoCutDetailResponse, err error) {
+	photoCut := entities.PhotoCut{
+		Title:  photoCutCreationRequest.Title,
+		Text:   photoCutCreationRequest.Text,
+		Link:   photoCutCreationRequest.Link,
+		Image:  photoCutCreationRequest.Image,
+		FilmID: photoCutCreationRequest.FilmID,
 	}
 
-	savedItem, err := i.repo.SaveItem(ctx, item)
+	savedPhotoCut, err := i.repo.SavePhotoCut(ctx, photoCut)
 	if err != nil {
 		return
 	}
 
-	itemResponse = dto.ItemDetailResponse{
-		Title:     savedItem.Title,
-		Text:      savedItem.Text,
-		Link:      savedItem.Link,
-		Image:     savedItem.Image,
-		Likes:     savedItem.Likes,
-		GroupID:   savedItem.GroupID,
-		CreatedAt: savedItem.CreatedAt,
+	photoCutResponse = dto.PhotoCutDetailResponse{
+		Title:     savedPhotoCut.Title,
+		Text:      savedPhotoCut.Text,
+		Link:      savedPhotoCut.Link,
+		Image:     savedPhotoCut.Image,
+		Likes:     savedPhotoCut.Likes,
+		FilmID:    savedPhotoCut.FilmID,
+		CreatedAt: savedPhotoCut.CreatedAt,
 	}
 	return
 }

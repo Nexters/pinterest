@@ -7,18 +7,18 @@ import (
 	"gorm.io/gorm"
 )
 
-type ItemRepository struct {
+type PhotoCutRepository struct {
 	*gorm.DB
 }
 
-func NewItemRepository(db *gorm.DB) *ItemRepository {
-	return &ItemRepository{db}
+func NewPhotoCutRepository(db *gorm.DB) *PhotoCutRepository {
+	return &PhotoCutRepository{db}
 }
 
-func (ir *ItemRepository) FindItem(ctx context.Context, itemId uint) (item Item, err error) {
-	tx := ir.DB.First(&item, itemId)
+func (ir *PhotoCutRepository) FindPhotoCut(ctx context.Context, photoCutId uint) (photoCut PhotoCut, err error) {
+	tx := ir.DB.First(&photoCut, photoCutId)
 	if tx.RowsAffected == 0 {
-		err = errors.NewNotFoundError("Item")
+		err = errors.NewNotFoundError("PhotoCut")
 		return
 	}
 	if tx.Error != nil {
@@ -28,11 +28,11 @@ func (ir *ItemRepository) FindItem(ctx context.Context, itemId uint) (item Item,
 	return
 }
 
-func (ir *ItemRepository) SaveItem(ctx context.Context, item Item) (Item, error) {
-	tx := ir.DB.Create(&item)
+func (ir *PhotoCutRepository) SavePhotoCut(ctx context.Context, photoCut PhotoCut) (PhotoCut, error) {
+	tx := ir.DB.Create(&photoCut)
 	if tx.Error != nil {
-		return item, errors.NewCreateFailedError("Item")
+		return photoCut, errors.NewCreateFailedError("PhotoCut")
 	}
 
-	return item, nil
+	return photoCut, nil
 }

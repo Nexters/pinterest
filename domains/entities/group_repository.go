@@ -8,19 +8,19 @@ import (
 	"gorm.io/gorm"
 )
 
-type GroupRepository struct {
+type FilmRepository struct {
 	*gorm.DB
 }
 
-func NewGroupRepository(db *gorm.DB) *GroupRepository {
-	return &GroupRepository{db}
+func NewFilmRepository(db *gorm.DB) *FilmRepository {
+	return &FilmRepository{db}
 }
 
-func (gr *GroupRepository) FindGroup(ctx context.Context, groupId uint) (group Group, err error) {
-	err = gr.DB.Preload("Items").First(&group, groupId).Error
+func (gr *FilmRepository) FindFilm(ctx context.Context, filmId uint) (film Film, err error) {
+	err = gr.DB.Preload("PhotoCuts").First(&film, filmId).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			err = customerrors.NewNotFoundError("Group")
+			err = customerrors.NewNotFoundError("Film")
 			return
 		}
 		return
@@ -28,23 +28,23 @@ func (gr *GroupRepository) FindGroup(ctx context.Context, groupId uint) (group G
 	return
 }
 
-func (gr *GroupRepository) CountOrderByUserId(ctx context.Context, userId string) (count int64, err error) {
-	tx := gr.DB.Model(&Group{}).Where("user_id = ?", userId).Count(&count)
+func (gr *FilmRepository) CountOrderByUserId(ctx context.Context, userId string) (count int64, err error) {
+	tx := gr.DB.Model(&Film{}).Where("user_id = ?", userId).Count(&count)
 	if tx.Error != nil {
 		return
 	}
 	return
 }
 
-func (gr *GroupRepository) SaveGroup(ctx context.Context, group Group) (Group, error) {
-	tx := gr.DB.Create(&group)
+func (gr *FilmRepository) SaveFilm(ctx context.Context, film Film) (Film, error) {
+	tx := gr.DB.Create(&film)
 	if tx.Error != nil {
-		return group, customerrors.NewCreateFailedError("Group")
+		return film, customerrors.NewCreateFailedError("Film")
 	}
-	return group, nil
+	return film, nil
 }
 
-func (gr *GroupRepository) FindAllFilmsInOrder(ctx context.Context, userId string) (films []Group, err error) {
+func (gr *FilmRepository) FindAllFilmsInOrder(ctx context.Context, userId string) (films []Film, err error) {
 	tx := gr.DB.Where("user_id = ?", userId).Order("order DESC").Find(&films)
 	if tx.Error != nil {
 		err = tx.Error

@@ -10,29 +10,29 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type Item struct {
+type PhotoCut struct {
 	router fiber.Router
-	svc    *usecases.ItemService
+	svc    *usecases.PhotoCutService
 }
 
-func NewItemController(router fiber.Router, isvc *usecases.ItemService) RouteBinder {
-	return &Item{router, isvc}
+func NewPhotoCutController(router fiber.Router, isvc *usecases.PhotoCutService) RouteBinder {
+	return &PhotoCut{router, isvc}
 }
 
-func (i *Item) Bind() {
-	i.router.Post("", i.saveItem)
-	i.router.Get("/:itemId", i.getItem)
+func (i *PhotoCut) Bind() {
+	i.router.Post("", i.savePhotoCut)
+	i.router.Get("/:photoCutId", i.getPhotoCut)
 }
 
-func (i *Item) getItem(c *fiber.Ctx) error {
-	itemIdStr := c.Params("itemId")
+func (i *PhotoCut) getPhotoCut(c *fiber.Ctx) error {
+	photoCutIdStr := c.Params("photoCutId")
 
-	itemId, err := strconv.Atoi(itemIdStr)
+	photoCutId, err := strconv.Atoi(photoCutIdStr)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	item, err := i.svc.FindByItemId(c.Context(), uint(itemId))
+	photoCut, err := i.svc.FindByPhotoCutId(c.Context(), uint(photoCutId))
 	if err != nil {
 		switch err.(type) {
 		case *errors.NotFoundError:
@@ -41,26 +41,26 @@ func (i *Item) getItem(c *fiber.Ctx) error {
 			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 		}
 	}
-	return c.JSON(item)
+	return c.JSON(photoCut)
 }
 
-func (i *Item) saveItem(c *fiber.Ctx) error {
-	var itemCreationRequest dto.ItemCreationRequest
-	err := c.BodyParser(&itemCreationRequest)
+func (i *PhotoCut) savePhotoCut(c *fiber.Ctx) error {
+	var photoCutCreationRequest dto.PhotoCutCreationRequest
+	err := c.BodyParser(&photoCutCreationRequest)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
 	validate := validator.New()
-	err = validate.Struct(itemCreationRequest)
+	err = validate.Struct(photoCutCreationRequest)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	itemDto, err := i.svc.CreateItem(c.Context(), itemCreationRequest)
+	photoCutDto, err := i.svc.CreatePhotoCut(c.Context(), photoCutCreationRequest)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(itemDto)
+	return c.JSON(photoCutDto)
 }

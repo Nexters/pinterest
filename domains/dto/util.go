@@ -5,7 +5,6 @@ import (
 	"github.com/go-playground/validator"
 )
 
-<<<<<<< HEAD
 func ToFilmDtoList(FilmList []entities.Film) (FilmDtoList []Film, err error) {
 	for _, film := range FilmList {
 		FilmInfo := Film{
@@ -14,16 +13,6 @@ func ToFilmDtoList(FilmList []entities.Film) (FilmDtoList []Film, err error) {
 			PhotoCutCount: film.PhotoCutCount,
 			Likes:         film.Likes,
 			UserID:        film.UserID,
-=======
-func ToGroupDtoList(groupList []entities.Group) (groupDtoList []Group, err error) {
-	for _, group := range groupList {
-		groupInfo := Group{
-			Title:     group.Title,
-			Order:     group.Order,
-			ItemCount: group.ItemCount,
-			Likes:     group.Likes,
-			UserID:    group.UserID,
->>>>>>> 77d1ae9 (feat: add group)
 		}
 		validate := validator.New()
 		err := validate.Struct(FilmInfo)
@@ -52,18 +41,18 @@ func ToVisitLogDtoList(visitLogList []entities.VisitLog) (visitLogDtoList []Visi
 	return
 }
 
-func ToItemDtoList(itemList []entities.Item) (itemDtoList []ItemDetailResponse, err error) {
+func ToPhotoCutDtoList(itemList []entities.PhotoCut) (photoCutDtoList []PhotoCutDetailResponse, err error) {
 	for _, item := range itemList {
-		itemDetail := ItemDetailResponse{
+		photoCutDetail := PhotoCutDetailResponse{
 			Title:     item.Title,
 			Text:      item.Text,
 			Link:      item.Link,
 			Image:     item.Image,
 			Likes:     item.Likes,
-			GroupID:   item.GroupID,
+			FilmID:    item.FilmID,
 			CreatedAt: item.CreatedAt,
 		}
-		itemDtoList = append(itemDtoList, itemDetail)
+		photoCutDtoList = append(photoCutDtoList, photoCutDetail)
 	}
 	return
 }

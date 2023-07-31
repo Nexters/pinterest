@@ -10,28 +10,28 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type Group struct {
+type Film struct {
 	router fiber.Router
-	svc    *usecases.GroupService
+	svc    *usecases.FilmService
 }
 
-func NewGroupController(router fiber.Router, svc *usecases.GroupService) RouteBinder {
-	return &Group{router, svc}
+func NewFilmController(router fiber.Router, svc *usecases.FilmService) RouteBinder {
+	return &Film{router, svc}
 }
 
-func (g *Group) Bind() {
-	g.router.Get("/:groupId", g.getGroup)
-	g.router.Post("", g.saveGroup)
+func (g *Film) Bind() {
+	g.router.Get("/:filmId", g.getFilm)
+	g.router.Post("", g.saveFilm)
 }
 
-func (g *Group) getGroup(c *fiber.Ctx) error {
-	groupIdStr := c.Params("groupId")
-	groupId, err := strconv.Atoi(groupIdStr)
+func (g *Film) getFilm(c *fiber.Ctx) error {
+	filmIdStr := c.Params("filmId")
+	filmId, err := strconv.Atoi(filmIdStr)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	groupResponse, err := g.svc.FindByGroupId(c.Context(), uint(groupId))
+	filmResponse, err := g.svc.FindByFilmId(c.Context(), uint(filmId))
 	if err != nil {
 		switch err.(type) {
 		case *errors.NotFoundError:
@@ -41,23 +41,23 @@ func (g *Group) getGroup(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.JSON(groupResponse)
+	return c.JSON(filmResponse)
 }
 
-func (g *Group) saveGroup(c *fiber.Ctx) error {
-	var groupCreationRequest dto.GroupCreationRequest
-	err := c.BodyParser(&groupCreationRequest)
+func (g *Film) saveFilm(c *fiber.Ctx) error {
+	var filmCreationRequest dto.FilmCreationRequest
+	err := c.BodyParser(&filmCreationRequest)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
 	validate := validator.New()
-	err = validate.Struct(groupCreationRequest)
+	err = validate.Struct(filmCreationRequest)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	itemDto, err := g.svc.CreateGroup(c.Context(), groupCreationRequest)
+	itemDto, err := g.svc.CreateFilm(c.Context(), filmCreationRequest)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
@@ -65,8 +65,8 @@ func (g *Group) saveGroup(c *fiber.Ctx) error {
 	return c.JSON(itemDto)
 }
 
-func (g *Group) getAllGroups(c *fiber.Ctx) error {
-	dto := new(dto.GroupSelectionRequest)
+func (g *Film) getAllFilms(c *fiber.Ctx) error {
+	dto := new(dto.FilmSelectionRequest)
 	err := c.BodyParser(&dto)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
