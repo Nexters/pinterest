@@ -1,13 +1,11 @@
 package controllers
 
 import (
-	"strconv"
-
 	"github.com/Nexters/pinterest/domains/dto"
-	"github.com/Nexters/pinterest/domains/errors"
 	"github.com/Nexters/pinterest/domains/usecases"
 	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 type User struct {
@@ -21,7 +19,7 @@ func NewUserController(router fiber.Router, svc *usecases.UserService) RouteBind
 
 func (u *User) Bind() {
 	u.router.Get("", u.getAllUsers)
-	u.router.Get("/:userId", u.getUser)
+	// u.router.Get("/:userId", u.getUser)
 	u.router.Post("", u.saveUser)
 }
 
@@ -34,31 +32,12 @@ func (u *User) getAllUsers(c *fiber.Ctx) error {
 	return c.JSON(users)
 }
 
-func (u *User) getUser(c *fiber.Ctx) error {
-	userIdStr := c.Params("userId")
-	userId, err := strconv.Atoi(userIdStr)
-	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
-	}
-
-	userDto, err := u.svc.FindByUserId(c.Context(), userId)
-	if err != nil {
-		switch err.(type) {
-		case *errors.NotFoundError:
-			return fiber.NewError(fiber.StatusNotFound, err.Error())
-		default:
-			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
-		}
-	}
-
-	return c.JSON(userDto)
-}
-
 func (u *User) saveUser(c *fiber.Ctx) error {
 	var userCreationRequest dto.UserCreationRequest
 	err := c.BodyParser(&userCreationRequest)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+
 	}
 
 	// UserCreationRequest 검증
@@ -70,7 +49,12 @@ func (u *User) saveUser(c *fiber.Ctx) error {
 
 	userDto, err := u.svc.CreateUser(c.Context(), userCreationRequest)
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		switch err {
+		case gorm.ErrDuplicatedKey:
+			return fiber.NewError(fiber.StatusConflict, err.Error())
+		default:
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
 	}
 
 	return c.JSON(userDto)

@@ -25,8 +25,8 @@ func (ur *UserRepository) FindAllUsers(ctx context.Context) (users []User, err e
 	return
 }
 
-func (ur *UserRepository) FindUser(ctx context.Context, userId int) (user User, err error) {
-	tx := ur.DB.First(&user, userId)
+func (ur *UserRepository) FindUser(ctx context.Context, userID string) (user User, err error) {
+	tx := ur.DB.Where("id = ?", userID).First(&user)
 	if tx.RowsAffected == 0 {
 		err = errors.NewNotFoundError("User")
 		return
@@ -39,11 +39,21 @@ func (ur *UserRepository) FindUser(ctx context.Context, userId int) (user User, 
 	return
 }
 
-func (ur *UserRepository) SaveUser(ctx context.Context, user User) (User, error) {
+func (ur *UserRepository) SaveUser(ctx context.Context, user User) (createdUser User, err error) {
+	// if userId is not null, return error
+	// tx := ur.DB.Where("id = ?", user.ID).First(&user)
+	// if tx.RowsAffected != 0 {
+	// 	err = errors.NewCreateFailedError("User")
+	// 	return
+	// }
+
 	tx := ur.DB.Create(&user)
 	if tx.Error != nil {
-		return user, errors.NewCreateFailedError("User")
+		err = tx.Error
+		return
 	}
 
-	return user, nil
+	createdUser = user
+
+	return
 }
