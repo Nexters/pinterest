@@ -1,17 +1,27 @@
 package main
 
 import (
+	_ "github.com/Nexters/pinterest/docs"
 	"github.com/Nexters/pinterest/domains/entities"
 	"github.com/Nexters/pinterest/domains/usecases"
 	"github.com/Nexters/pinterest/interfaces/config"
 	"github.com/Nexters/pinterest/interfaces/controllers"
 	"github.com/Nexters/pinterest/interfaces/database"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/swagger" // swagger handler
 )
 
+// @title grafi API
+// @version 1.0
+// @description grafi API
+// @contact.email chaewonkong@gmail.com
+// @host localhost:8080
+// @BasePath /
 func main() {
 	app := fiber.New()
 	settings := config.NewSettings()
+
+	app.Get("/swagger/*", swagger.HandlerDefault) // default
 
 	// Database
 	db := database.NewDatabase(database.MySQLDialector(settings))

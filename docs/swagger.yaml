@@ -1,0 +1,10 @@
+basePath: /
+host: localhost:8080
+info:
+  contact:
+    email: chaewonkong@gmail.com
+  description: grafi API
+  title: grafi API
+  version: "1.0"
+paths: {}
+swagger: "2.0"
