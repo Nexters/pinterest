@@ -96,3 +96,16 @@ func (f *FilmService) UpdateFilm(ctx context.Context, filmUpdateRequest dto.Film
 	}
 	return
 }
+
+func (f *FilmService) DeleteFilm(ctx context.Context, filmId uint) (err error) {
+	film, err := f.repo.FindFilm(ctx, uint(filmId))
+	if err != nil {
+		return
+	}
+
+	err = f.repo.Delete(&film).Error
+	if err != nil {
+		return
+	}
+	return
+}

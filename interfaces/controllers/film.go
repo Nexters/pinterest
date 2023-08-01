@@ -106,3 +106,18 @@ func (f *Film) editFilm(c *fiber.Ctx) error {
 
 	return c.SendString("필름 수정 성공")
 }
+
+func (f *Film) deleteFilm(c *fiber.Ctx) error {
+	filmIdStr := c.Params("filmId")
+	filmId, err := strconv.Atoi(filmIdStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	err = f.svc.DeleteFilm(c.Context(), uint(filmId))
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return c.SendString("필름 삭제 성공")
+}
