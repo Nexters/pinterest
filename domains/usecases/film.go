@@ -15,8 +15,8 @@ func NewFilmService(repo *entities.FilmRepository) *FilmService {
 	return &FilmService{repo}
 }
 
-func (g *FilmService) FindByFilmId(ctx context.Context, filmId uint) (filmDetailResponse dto.FilmDetailResponse, err error) {
-	film, err := g.repo.FindFilm(ctx, filmId)
+func (f *FilmService) FindByFilmId(ctx context.Context, filmId uint) (filmDetailResponse dto.FilmDetailResponse, err error) {
+	film, err := f.repo.FindFilm(ctx, filmId)
 	if err != nil {
 		return
 	}
@@ -38,8 +38,8 @@ func (g *FilmService) FindByFilmId(ctx context.Context, filmId uint) (filmDetail
 	return
 }
 
-func (g *FilmService) CreateFilm(ctx context.Context, filmCreationRequest dto.FilmCreationRequest) (filmDetailResponse dto.FilmDetailResponse, err error) {
-	order, err := g.repo.CountOrderByUserId(ctx, filmCreationRequest.UserID)
+func (f *FilmService) CreateFilm(ctx context.Context, filmCreationRequest dto.FilmCreationRequest) (filmDetailResponse dto.FilmDetailResponse, err error) {
+	order, err := f.repo.CountOrderByUserId(ctx, filmCreationRequest.UserID)
 	if err != nil {
 		return
 	}
@@ -50,7 +50,7 @@ func (g *FilmService) CreateFilm(ctx context.Context, filmCreationRequest dto.Fi
 		Order:  uint(order),
 	}
 
-	savedFilm, err := g.repo.SaveFilm(ctx, film)
+	savedFilm, err := f.repo.SaveFilm(ctx, film)
 	if err != nil {
 		return
 	}
@@ -66,8 +66,8 @@ func (g *FilmService) CreateFilm(ctx context.Context, filmCreationRequest dto.Fi
 	return
 }
 
-func (g *FilmService) FindAllFilms(ctx context.Context, userId string) (filmList []dto.Film, err error) {
-	films, err := g.repo.FindAllFilmsInOrder(ctx, userId)
+func (f *FilmService) FindAllFilms(ctx context.Context, userId string) (filmList []dto.Film, err error) {
+	films, err := f.repo.FindAllFilmsInOrder(ctx, userId)
 	if err != nil {
 		return
 	}

@@ -15,8 +15,8 @@ func NewPhotoCutRepository(db *gorm.DB) *PhotoCutRepository {
 	return &PhotoCutRepository{db}
 }
 
-func (ir *PhotoCutRepository) FindPhotoCut(ctx context.Context, photoCutId uint) (photoCut PhotoCut, err error) {
-	tx := ir.DB.First(&photoCut, photoCutId)
+func (pcr *PhotoCutRepository) FindPhotoCut(ctx context.Context, photoCutId uint) (photoCut PhotoCut, err error) {
+	tx := pcr.DB.First(&photoCut, photoCutId)
 	if tx.RowsAffected == 0 {
 		err = errors.NewNotFoundError("PhotoCut")
 		return
@@ -28,8 +28,8 @@ func (ir *PhotoCutRepository) FindPhotoCut(ctx context.Context, photoCutId uint)
 	return
 }
 
-func (ir *PhotoCutRepository) SavePhotoCut(ctx context.Context, photoCut PhotoCut) (PhotoCut, error) {
-	tx := ir.DB.Create(&photoCut)
+func (pcr *PhotoCutRepository) SavePhotoCut(ctx context.Context, photoCut PhotoCut) (PhotoCut, error) {
+	tx := pcr.DB.Create(&photoCut)
 	if tx.Error != nil {
 		return photoCut, errors.NewCreateFailedError("PhotoCut")
 	}

@@ -19,19 +19,19 @@ func NewFilmController(router fiber.Router, svc *usecases.FilmService) RouteBind
 	return &Film{router, svc}
 }
 
-func (g *Film) Bind() {
-	g.router.Get("/:filmId", g.getFilm)
-	g.router.Post("", g.saveFilm)
+func (f *Film) Bind() {
+	f.router.Get("/:filmId", f.getFilm)
+	f.router.Post("", f.saveFilm)
 }
 
-func (g *Film) getFilm(c *fiber.Ctx) error {
+func (f *Film) getFilm(c *fiber.Ctx) error {
 	filmIdStr := c.Params("filmId")
 	filmId, err := strconv.Atoi(filmIdStr)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	filmResponse, err := g.svc.FindByFilmId(c.Context(), uint(filmId))
+	filmResponse, err := f.svc.FindByFilmId(c.Context(), uint(filmId))
 	if err != nil {
 		switch err.(type) {
 		case *errors.NotFoundError:
@@ -44,7 +44,7 @@ func (g *Film) getFilm(c *fiber.Ctx) error {
 	return c.JSON(filmResponse)
 }
 
-func (g *Film) saveFilm(c *fiber.Ctx) error {
+func (f *Film) saveFilm(c *fiber.Ctx) error {
 	var filmCreationRequest dto.FilmCreationRequest
 	err := c.BodyParser(&filmCreationRequest)
 	if err != nil {
@@ -57,7 +57,7 @@ func (g *Film) saveFilm(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	itemDto, err := g.svc.CreateFilm(c.Context(), filmCreationRequest)
+	itemDto, err := f.svc.CreateFilm(c.Context(), filmCreationRequest)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
@@ -65,7 +65,7 @@ func (g *Film) saveFilm(c *fiber.Ctx) error {
 	return c.JSON(itemDto)
 }
 
-func (g *Film) getAllFilms(c *fiber.Ctx) error {
+func (f *Film) getAllFilms(c *fiber.Ctx) error {
 	dto := new(dto.FilmSelectionRequest)
 	err := c.BodyParser(&dto)
 	if err != nil {
@@ -79,7 +79,7 @@ func (g *Film) getAllFilms(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	films, err := g.svc.FindAllFilms(c.Context(), dto.UserID)
+	films, err := f.svc.FindAllFilms(c.Context(), dto.UserID)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}

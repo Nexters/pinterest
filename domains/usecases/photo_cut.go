@@ -15,8 +15,8 @@ func NewPhotoCutService(repo *entities.PhotoCutRepository) *PhotoCutService {
 	return &PhotoCutService{repo}
 }
 
-func (i *PhotoCutService) FindByPhotoCutId(ctx context.Context, photoCutId uint) (photoCutResponse dto.PhotoCutDetailResponse, err error) {
-	photoCut, err := i.repo.FindPhotoCut(ctx, photoCutId)
+func (pc *PhotoCutService) FindByPhotoCutId(ctx context.Context, photoCutId uint) (photoCutResponse dto.PhotoCutDetailResponse, err error) {
+	photoCut, err := pc.repo.FindPhotoCut(ctx, photoCutId)
 	if err != nil {
 		return
 	}
@@ -33,7 +33,7 @@ func (i *PhotoCutService) FindByPhotoCutId(ctx context.Context, photoCutId uint)
 	return
 }
 
-func (i *PhotoCutService) CreatePhotoCut(
+func (pc *PhotoCutService) CreatePhotoCut(
 	ctx context.Context,
 	photoCutCreationRequest dto.PhotoCutCreationRequest,
 ) (photoCutResponse dto.PhotoCutDetailResponse, err error) {
@@ -45,7 +45,7 @@ func (i *PhotoCutService) CreatePhotoCut(
 		FilmID: photoCutCreationRequest.FilmID,
 	}
 
-	savedPhotoCut, err := i.repo.SavePhotoCut(ctx, photoCut)
+	savedPhotoCut, err := pc.repo.SavePhotoCut(ctx, photoCut)
 	if err != nil {
 		return
 	}

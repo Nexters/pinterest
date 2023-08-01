@@ -15,16 +15,16 @@ type PhotoCut struct {
 	svc    *usecases.PhotoCutService
 }
 
-func NewPhotoCutController(router fiber.Router, isvc *usecases.PhotoCutService) RouteBinder {
-	return &PhotoCut{router, isvc}
+func NewPhotoCutController(router fiber.Router, svc *usecases.PhotoCutService) RouteBinder {
+	return &PhotoCut{router, svc}
 }
 
-func (i *PhotoCut) Bind() {
-	i.router.Post("", i.savePhotoCut)
-	i.router.Get("/:photoCutId", i.getPhotoCut)
+func (pc *PhotoCut) Bind() {
+	pc.router.Post("", pc.savePhotoCut)
+	pc.router.Get("/:photoCutId", pc.getPhotoCut)
 }
 
-func (i *PhotoCut) getPhotoCut(c *fiber.Ctx) error {
+func (pc *PhotoCut) getPhotoCut(c *fiber.Ctx) error {
 	photoCutIdStr := c.Params("photoCutId")
 
 	photoCutId, err := strconv.Atoi(photoCutIdStr)
@@ -32,7 +32,7 @@ func (i *PhotoCut) getPhotoCut(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	photoCut, err := i.svc.FindByPhotoCutId(c.Context(), uint(photoCutId))
+	photoCut, err := pc.svc.FindByPhotoCutId(c.Context(), uint(photoCutId))
 	if err != nil {
 		switch err.(type) {
 		case *errors.NotFoundError:
@@ -44,7 +44,7 @@ func (i *PhotoCut) getPhotoCut(c *fiber.Ctx) error {
 	return c.JSON(photoCut)
 }
 
-func (i *PhotoCut) savePhotoCut(c *fiber.Ctx) error {
+func (pc *PhotoCut) savePhotoCut(c *fiber.Ctx) error {
 	var photoCutCreationRequest dto.PhotoCutCreationRequest
 	err := c.BodyParser(&photoCutCreationRequest)
 	if err != nil {
@@ -57,7 +57,7 @@ func (i *PhotoCut) savePhotoCut(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	photoCutDto, err := i.svc.CreatePhotoCut(c.Context(), photoCutCreationRequest)
+	photoCutDto, err := pc.svc.CreatePhotoCut(c.Context(), photoCutCreationRequest)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
