@@ -45,24 +45,24 @@ func (f *Film) getFilm(c *fiber.Ctx) error {
 }
 
 func (f *Film) saveFilm(c *fiber.Ctx) error {
-	var filmCreationRequest dto.FilmCreationRequest
-	err := c.BodyParser(&filmCreationRequest)
+	dto := new(dto.FilmCreationRequest)
+	err := c.BodyParser(&dto)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
 	validate := validator.New()
-	err = validate.Struct(filmCreationRequest)
+	err = validate.Struct(dto)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	itemDto, err := f.svc.CreateFilm(c.Context(), filmCreationRequest)
+	filmDto, err := f.svc.CreateFilm(c.Context(), *dto)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(itemDto)
+	return c.JSON(filmDto)
 }
 
 func (f *Film) getAllFilms(c *fiber.Ctx) error {
@@ -72,7 +72,6 @@ func (f *Film) getAllFilms(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	// validate
 	validate := validator.New()
 	err = validate.Struct(dto)
 	if err != nil {
@@ -85,4 +84,25 @@ func (f *Film) getAllFilms(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(films)
+}
+
+func (f *Film) editFilm(c *fiber.Ctx) error {
+	dto := new(dto.FilmUpdateRequest)
+	err := c.BodyParser(&dto)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	validate := validator.New()
+	err = validate.Struct(dto)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	err = f.svc.UpdateFilm(c.Context(), *dto)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return c.SendString("필름 수정 성공")
 }
