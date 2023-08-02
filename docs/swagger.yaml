@@ -1,10 +1,65 @@
 basePath: /
-host: localhost:8080
+definitions:
+  dto.UserDetailResponse:
+    properties:
+      name:
+        type: string
+      profile_img:
+        type: string
+      text:
+        type: string
+      user_id:
+        type: string
+      visitors:
+        type: integer
+    type: object
+  dto.UserLoginRequest:
+    properties:
+      password:
+        type: string
+      user_id:
+        type: string
+    required:
+    - password
+    - user_id
+    type: object
+host: https://api.grafi.cc
 info:
   contact:
     email: chaewonkong@gmail.com
   description: grafi API
   title: grafi API
   version: "1.0"
-paths: {}
+paths:
+  /auth:
+    post:
+      consumes:
+      - application/json
+      description: Login user
+      parameters:
+      - description: user_id, password로 로그인
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserDetailResponse'
+        "400":
+          description: 'Key: ''UserLoginRequest.Password'' Error:Field validation
+            for ''Password'' failed on the ''required'' tag'
+          schema:
+            type: string
+        "401":
+          description: Anauthorized
+          schema:
+            type: string
+      summary: Login
+      tags:
+      - auth
 swagger: "2.0"
