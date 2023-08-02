@@ -64,3 +64,39 @@ func (pc *PhotoCut) savePhotoCut(c *fiber.Ctx) error {
 
 	return c.JSON(photoCutDto)
 }
+
+func (pc *PhotoCut) editPhotoCut(c *fiber.Ctx) error {
+	dto := new(dto.PhotoCutUpdateRequest)
+	err := c.BodyParser(&dto)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	validate := validator.New()
+	err = validate.Struct(dto)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	err = pc.svc.UpdatePhotoCut(c.Context(), *dto)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return c.SendString("필름 수정 성공")
+}
+
+func (pc *PhotoCut) deletePhotoCut(c *fiber.Ctx) error {
+	photoCutIdStr := c.Params("photoCutId")
+	photoCutId, err := strconv.Atoi(photoCutIdStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	err = pc.svc.DeletePhotoCut(c.Context(), uint(photoCutId))
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return c.SendString("필름 삭제 성공")
+}

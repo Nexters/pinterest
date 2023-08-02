@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/Nexters/pinterest/domains/dto"
 	"github.com/Nexters/pinterest/domains/entities"
@@ -58,6 +59,44 @@ func (pc *PhotoCutService) CreatePhotoCut(
 		Likes:     savedPhotoCut.Likes,
 		FilmID:    savedPhotoCut.FilmID,
 		CreatedAt: savedPhotoCut.CreatedAt,
+	}
+	return
+}
+
+func (pc *PhotoCutService) UpdatePhotoCut(ctx context.Context, photoCutUpdateRequest dto.PhotoCutUpdateRequest) (err error) {
+	photoCutId, err := strconv.Atoi(photoCutUpdateRequest.FilmID)
+
+	photoCut, err := pc.repo.FindPhotoCut(ctx, uint(photoCutId))
+	if err != nil {
+		return
+	}
+
+	if photoCutUpdateRequest.Title != "" {
+		photoCut.Title = photoCutUpdateRequest.Title
+	}
+	if photoCutUpdateRequest.Text != "" {
+		photoCut.Text = photoCutUpdateRequest.Text
+	}
+	if photoCutUpdateRequest.Image != "" {
+		photoCut.Image = photoCutUpdateRequest.Image
+	}
+
+	err = pc.repo.Save(&photoCut).Error
+	if err != nil {
+		return
+	}
+	return
+}
+
+func (pc *PhotoCutService) DeletePhotoCut(ctx context.Context, photoCutId uint) (err error) {
+	photoCut, err := pc.repo.FindPhotoCut(ctx, uint(photoCutId))
+	if err != nil {
+		return
+	}
+
+	err = pc.repo.Delete(&photoCut).Error
+	if err != nil {
+		return
 	}
 	return
 }
