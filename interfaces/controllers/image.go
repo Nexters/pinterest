@@ -20,6 +20,8 @@ func (i *Image) Bind() {
 
 func (i *Image) getPresignedUrl(c *fiber.Ctx) error {
 	imageDto, err := i.svc.GeneratePresignedUrl(c.Context())
-	// 생성된 Presigned URL을 클라이언트에게 전달
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
 	return c.JSON(imageDto)
 }
