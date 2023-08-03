@@ -22,6 +22,8 @@ func NewPhotoCutController(router fiber.Router, svc *usecases.PhotoCutService) R
 func (pc *PhotoCut) Bind() {
 	pc.router.Post("", pc.savePhotoCut)
 	pc.router.Get("/:photoCutId", pc.getPhotoCut)
+	pc.router.Put("", pc.editPhotoCut)
+	pc.router.Delete("/:photoCutId", pc.deletePhotoCut)
 }
 
 func (pc *PhotoCut) getPhotoCut(c *fiber.Ctx) error {

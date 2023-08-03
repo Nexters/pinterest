@@ -2,7 +2,6 @@ package usecases
 
 import (
 	"context"
-	"strconv"
 
 	"github.com/Nexters/pinterest/domains/dto"
 	"github.com/Nexters/pinterest/domains/entities"
@@ -70,9 +69,7 @@ func (pc *PhotoCutService) CreatePhotoCut(
 }
 
 func (pc *PhotoCutService) UpdatePhotoCut(ctx context.Context, photoCutUpdateRequest dto.PhotoCutUpdateRequest) (err error) {
-	photoCutId, err := strconv.Atoi(photoCutUpdateRequest.FilmID)
-
-	photoCut, err := pc.repo.FindPhotoCut(ctx, uint(photoCutId))
+	photoCut, err := pc.repo.FindPhotoCut(ctx, photoCutUpdateRequest.ID)
 	if err != nil {
 		return
 	}

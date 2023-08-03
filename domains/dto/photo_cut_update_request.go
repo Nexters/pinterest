@@ -1,9 +1,9 @@
 package dto
 
 type PhotoCutUpdateRequest struct {
-	ID     string `json:"photo_cut_id" validate:"required"`
+	ID     uint   `json:"photo_cut_id" validate:"required"`
 	Title  string `json:"title"`
 	Text   string `json:"text"`
 	Image  string `json:"image"`
-	FilmID string `json:"film_id" validate:"required"`
+	FilmID uint   `json:"film_id" validate:"required"`
 }
