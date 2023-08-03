@@ -34,6 +34,40 @@ func (u *User) getAllUsers(c *fiber.Ctx) error {
 
 // user
 // @Summary      user
+// @Description  Find User by ID
+// @Tags         user
+// @Accept       json
+// @Produce      json
+// @Param        user_id   path     string  true  "user_id"
+// @Success      200  {object}  dto.UserDetailResponse
+// @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
+// @failure      500  {string}   string   "Internal Server Error"
+// @Router       /user/{user_id} [get]
+func (u *User) getUserByID(c *fiber.Ctx) error {
+	params := dto.UserDetailRequest{}
+	err := c.ParamsParser(&params)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	// validate
+	validate := validator.New()
+	err = validate.Struct(params)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	userDetail, err := u.svc.FindUserByID(c.Context(), params.UserID)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusNotFound, err.Error())
+	}
+
+	return c.JSON(userDetail)
+}
+
+// user
+// @Summary      user
 // @Description  Create User
 // @Tags         user
 // @Accept       json
@@ -49,7 +83,6 @@ func (u *User) saveUser(c *fiber.Ctx) error {
 	err := c.BodyParser(&userCreationRequest)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-
 	}
 
 	// UserCreationRequest 검증

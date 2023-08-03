@@ -141,4 +141,33 @@ paths:
       summary: user
       tags:
       - user
+  /user/{user_id}:
+    get:
+      consumes:
+      - application/json
+      description: Find User by ID
+      parameters:
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserDetailResponse'
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: user
+      tags:
+      - user
 swagger: "2.0"

@@ -46,6 +46,13 @@ func (u *UserService) CreateUser(ctx context.Context, userCreationRequest dto.Us
 }
 
 func (u *UserService) FindUserByID(ctx context.Context, userID string) (userDetail dto.UserDetailResponse, err error) {
+	user, err := u.repo.FindUser(ctx, userID)
+
+	userDetail.Name = user.Name
+	userDetail.Profile = user.Profile
+	userDetail.Text = user.Text
+	userDetail.UserID = user.ID
+	userDetail.Visitors = user.Visitors
 	return
 }
 
