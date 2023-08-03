@@ -23,8 +23,8 @@ func main() {
 
 	// usecases/services
 	userSvc := usecases.NewUserService(userRepo)
-	photoCutSvc := usecases.NewPhotoCutService(photoCutRepo)
-	filmSvc := usecases.NewFilmService(filmRepo)
+	photoCutSvc := usecases.NewPhotoCutService(photoCutRepo, filmRepo)
+	filmSvc := usecases.NewFilmService(filmRepo, userRepo)
 
 	// create controllers with route Films
 	root := controllers.NewRootController(app.Group("/"))
