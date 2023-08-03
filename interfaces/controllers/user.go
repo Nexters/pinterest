@@ -19,7 +19,7 @@ func NewUserController(router fiber.Router, svc *usecases.UserService) RouteBind
 
 func (u *User) Bind() {
 	u.router.Get("", u.getAllUsers)
-	// u.router.Get("/:userId", u.getUser)
+	u.router.Get("/:userId", u.getUserByID)
 	u.router.Post("", u.saveUser)
 }
 
