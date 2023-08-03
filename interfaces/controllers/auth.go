@@ -20,6 +20,19 @@ func (a *Auth) Bind() {
 	a.router.Post("", a.login)
 }
 
+// login
+// @Summary      Login
+// @Description  Login user
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        user   body     dto.UserLoginRequest  true  "user_id, password로 로그인"
+// @Success      200  {object}  dto.UserDetailResponse
+// @Success      200  {object}  dto.UserDetailResponse
+// @Success      200  {object}  dto.UserDetailResponse
+// @failure      400              {string} string   "Key: 'UserLoginRequest.Password' Error:Field validation for 'Password' failed on the 'required' tag"
+// @failure      401  {string}   string   "Anauthorized"
+// @Router       /auth [post]
 func (a *Auth) login(c *fiber.Ctx) error {
 	dto := new(dto.UserLoginRequest)
 	err := c.BodyParser(dto)

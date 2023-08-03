@@ -12,13 +12,13 @@ ref:
 
 # build
 build:
-	@/bin/sh -c 'echo "${GREEN}빌드를 시작합니다.${NC}"'
-	@mkdir -p bin
-	@go mod download && go mod verify
-	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/
+	@/bin/sh -c 'echo "${GREEN}docker 빌드 및 push를 시작합니다. Version: ${VERSION} ${NC}"'
+	@docker build -t ghcr.io/nexters/pinterest:${VERSION} .
+	@/bin/sh -c 'echo "${GREEN}[Push Image] Pushing version: ${VERSION} ... ${NC}"'
+	@docker push ghcr.io/nexters/pinterest:${VERSION}
 .PHONY: build
 
 # Update Swagger
 docs:
-	@swag init --parseDependency --parseInternal
+	@swag init
 .PHONY: docs
