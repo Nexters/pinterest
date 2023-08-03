@@ -106,6 +106,10 @@ func (f *FilmService) DeleteFilm(ctx context.Context, filmId uint) (err error) {
 		return
 	}
 
+	for _, pc := range film.PhotoCuts {
+		f.repo.Delete(&pc)
+	}
+
 	err = f.repo.Delete(&film).Error
 	if err != nil {
 		return
