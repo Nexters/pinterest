@@ -69,7 +69,7 @@ func (pc *PhotoCut) savePhotoCut(c *fiber.Ctx) error {
 
 func (pc *PhotoCut) editPhotoCut(c *fiber.Ctx) error {
 	dto := new(dto.PhotoCutUpdateRequest)
-	err := c.BodyParser(&dto)
+	err := c.BodyParser(dto)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}

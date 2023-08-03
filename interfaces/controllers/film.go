@@ -48,7 +48,7 @@ func (f *Film) getFilm(c *fiber.Ctx) error {
 
 func (f *Film) saveFilm(c *fiber.Ctx) error {
 	dto := new(dto.FilmCreationRequest)
-	err := c.BodyParser(&dto)
+	err := c.BodyParser(dto)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
@@ -69,7 +69,7 @@ func (f *Film) saveFilm(c *fiber.Ctx) error {
 
 func (f *Film) getAllFilms(c *fiber.Ctx) error {
 	dto := new(dto.FilmSelectionRequest)
-	err := c.BodyParser(&dto)
+	err := c.BodyParser(dto)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
@@ -90,7 +90,7 @@ func (f *Film) getAllFilms(c *fiber.Ctx) error {
 
 func (f *Film) editFilm(c *fiber.Ctx) error {
 	dto := new(dto.FilmUpdateRequest)
-	err := c.BodyParser(&dto)
+	err := c.BodyParser(dto)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}

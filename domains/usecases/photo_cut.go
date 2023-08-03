@@ -85,9 +85,6 @@ func (pc *PhotoCutService) UpdatePhotoCut(ctx context.Context, photoCutUpdateReq
 	}
 
 	err = pc.repo.Save(&photoCut).Error
-	if err != nil {
-		return
-	}
 	return
 }
 
@@ -98,8 +95,5 @@ func (pc *PhotoCutService) DeletePhotoCut(ctx context.Context, photoCutId uint) 
 	}
 
 	err = pc.repo.Delete(&photoCut).Error
-	if err != nil {
-		return
-	}
 	return
 }

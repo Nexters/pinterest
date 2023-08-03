@@ -18,11 +18,8 @@ func NewFilmRepository(db *gorm.DB) *FilmRepository {
 
 func (fr *FilmRepository) FindFilm(ctx context.Context, filmId uint) (film Film, err error) {
 	err = fr.DB.Preload("PhotoCuts").First(&film, filmId).Error
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			err = customerrors.NewNotFoundError("Film")
-			return
-		}
+	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		err = customerrors.NewNotFoundError("Film")
 		return
 	}
 	return
