@@ -9,11 +9,12 @@ import (
 )
 
 type FilmService struct {
-	repo *entities.FilmRepository
+	repo  *entities.FilmRepository
+	urepo *entities.UserRepository
 }
 
-func NewFilmService(repo *entities.FilmRepository) *FilmService {
-	return &FilmService{repo}
+func NewFilmService(repo *entities.FilmRepository, urepo *entities.UserRepository) *FilmService {
+	return &FilmService{repo, urepo}
 }
 
 func (f *FilmService) FindByFilmId(ctx context.Context, filmId uint) (filmDetailResponse dto.FilmDetailResponse, err error) {
@@ -40,7 +41,12 @@ func (f *FilmService) FindByFilmId(ctx context.Context, filmId uint) (filmDetail
 }
 
 func (f *FilmService) CreateFilm(ctx context.Context, filmCreationRequest dto.FilmCreationRequest) (filmDetailResponse dto.FilmDetailResponse, err error) {
-	order, err := f.repo.CountOrderByUserId(ctx, filmCreationRequest.UserID)
+	user, err := f.urepo.FindUser(ctx, filmCreationRequest.UserID)
+	if err != nil {
+		return
+	}
+
+	order, err := f.repo.CountOrderByUserId(ctx, user.ID)
 	if err != nil {
 		return
 	}
