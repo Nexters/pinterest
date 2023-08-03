@@ -79,9 +79,6 @@ func (f *FilmService) FindAllFilms(ctx context.Context, userId string) (filmList
 	}
 
 	filmList, err = dto.ToFilmDtoList(films)
-	if err != nil {
-		return
-	}
 	return
 }
 
@@ -94,9 +91,6 @@ func (f *FilmService) UpdateFilm(ctx context.Context, filmUpdateRequest dto.Film
 	film.Title = filmUpdateRequest.Title
 
 	err = f.repo.Save(&film).Error
-	if err != nil {
-		return
-	}
 	return
 }
 
@@ -106,13 +100,8 @@ func (f *FilmService) DeleteFilm(ctx context.Context, filmId uint) (err error) {
 		return
 	}
 
-	for _, pc := range film.PhotoCuts {
-		f.repo.Delete(&pc)
-	}
+	f.repo.Where("film_id = ?", filmId).Delete(&entities.PhotoCut{})
 
 	err = f.repo.Delete(&film).Error
-	if err != nil {
-		return
-	}
 	return
 }
