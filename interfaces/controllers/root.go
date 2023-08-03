@@ -10,6 +10,14 @@ func NewRootController(router fiber.Router) RouteBinder {
 	return &Root{router}
 }
 
+// login
+// @Summary      healthcheck
+// @Description  healthcheck
+// @Tags         default
+// @Accept       json
+// @Produce      json
+// @Success      200  {string}  "ok"
+// @Router       /get [get]
 func (r *Root) Bind() {
 	r.router.Get("/", r.alive)
 }

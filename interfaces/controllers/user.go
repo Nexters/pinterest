@@ -32,6 +32,18 @@ func (u *User) getAllUsers(c *fiber.Ctx) error {
 	return c.JSON(users)
 }
 
+// user
+// @Summary      user
+// @Description  Create User
+// @Tags         user
+// @Accept       json
+// @Produce      json
+// @Param        user   body     dto.UserCreationRequest  true  "user_id, password, name(닉네임)"
+// @Success      201  {object}  dto.UserCreationResponse
+// @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
+// @failure      409  {string}   string   "Conflict: 이미 id가 존재하는 경우"
+// @failure      500  {string}   string   "Internal Server Error"
+// @Router       /user [post]
 func (u *User) saveUser(c *fiber.Ctx) error {
 	var userCreationRequest dto.UserCreationRequest
 	err := c.BodyParser(&userCreationRequest)

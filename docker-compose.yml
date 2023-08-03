@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   pinterest:
-    image: ghcr.io/nexters/pinterest:latest
+    image: ghcr.io/nexters/pinterest:${VERSION}
     ports:
       - "8080:8080"
     env_file:
