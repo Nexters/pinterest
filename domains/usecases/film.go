@@ -2,7 +2,6 @@ package usecases
 
 import (
 	"context"
-	"strconv"
 
 	"github.com/Nexters/pinterest/domains/dto"
 	"github.com/Nexters/pinterest/domains/entities"
@@ -87,9 +86,7 @@ func (f *FilmService) FindAllFilms(ctx context.Context, userId string) (filmList
 }
 
 func (f *FilmService) UpdateFilm(ctx context.Context, filmUpdateRequest dto.FilmUpdateRequest) (err error) {
-	filmId, err := strconv.Atoi(filmUpdateRequest.FilmID)
-
-	film, err := f.repo.FindFilm(ctx, uint(filmId))
+	film, err := f.repo.FindFilm(ctx, filmUpdateRequest.FilmID)
 	if err != nil {
 		return
 	}

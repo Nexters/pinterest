@@ -22,6 +22,8 @@ func NewFilmController(router fiber.Router, svc *usecases.FilmService) RouteBind
 func (f *Film) Bind() {
 	f.router.Get("/:filmId", f.getFilm)
 	f.router.Post("", f.saveFilm)
+	f.router.Put("", f.editFilm)
+	f.router.Delete("/:filmId", f.deleteFilm)
 }
 
 func (f *Film) getFilm(c *fiber.Ctx) error {
