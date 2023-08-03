@@ -22,7 +22,7 @@ func (a *Auth) Bind() {
 
 func (a *Auth) login(c *fiber.Ctx) error {
 	dto := new(dto.UserLoginRequest)
-	err := c.BodyParser(&dto)
+	err := c.BodyParser(dto)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}

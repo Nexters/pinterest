@@ -9,6 +9,7 @@ type Film struct {
 	PhotoCutCount uint
 	Likes         uint
 	UserID        string
+	PhotoCuts     []PhotoCut
 }
 
 func (Film) tableName() string {
