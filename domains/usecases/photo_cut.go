@@ -9,11 +9,12 @@ import (
 )
 
 type PhotoCutService struct {
-	repo *entities.PhotoCutRepository
+	repo  *entities.PhotoCutRepository
+	frepo *entities.FilmRepository
 }
 
-func NewPhotoCutService(repo *entities.PhotoCutRepository) *PhotoCutService {
-	return &PhotoCutService{repo}
+func NewPhotoCutService(repo *entities.PhotoCutRepository, frepo *entities.FilmRepository) *PhotoCutService {
+	return &PhotoCutService{repo, frepo}
 }
 
 func (pc *PhotoCutService) FindByPhotoCutId(ctx context.Context, photoCutId uint) (photoCutResponse dto.PhotoCutDetailResponse, err error) {
@@ -38,12 +39,17 @@ func (pc *PhotoCutService) CreatePhotoCut(
 	ctx context.Context,
 	photoCutCreationRequest dto.PhotoCutCreationRequest,
 ) (photoCutResponse dto.PhotoCutDetailResponse, err error) {
+	film, err := pc.frepo.FindFilm(ctx, photoCutCreationRequest.FilmID)
+	if err != nil {
+		return
+	}
+
 	photoCut := entities.PhotoCut{
 		Title:  photoCutCreationRequest.Title,
 		Text:   photoCutCreationRequest.Text,
 		Link:   photoCutCreationRequest.Link,
 		Image:  photoCutCreationRequest.Image,
-		FilmID: photoCutCreationRequest.FilmID,
+		FilmID: film.ID,
 	}
 
 	savedPhotoCut, err := pc.repo.SavePhotoCut(ctx, photoCut)
