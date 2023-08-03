@@ -61,6 +61,21 @@ info:
   title: grafi API
   version: "1.0"
 paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: healthcheck
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: healthcheck
+      tags:
+      - default
   /auth:
     post:
       consumes:
@@ -92,21 +107,6 @@ paths:
       summary: Login
       tags:
       - auth
-  /get:
-    get:
-      consumes:
-      - application/json
-      description: healthcheck
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ok
-          schema:
-            type: string
-      summary: healthcheck
-      tags:
-      - default
   /user:
     post:
       consumes:

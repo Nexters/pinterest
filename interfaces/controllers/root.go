@@ -17,7 +17,7 @@ func NewRootController(router fiber.Router) RouteBinder {
 // @Accept       json
 // @Produce      json
 // @Success      200  {string}  "ok"
-// @Router       /get [get]
+// @Router       / [get]
 func (r *Root) Bind() {
 	r.router.Get("/", r.alive)
 }
