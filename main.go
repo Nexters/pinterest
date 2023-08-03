@@ -9,6 +9,8 @@ import (
 	"github.com/Nexters/pinterest/interfaces/database"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/swagger" // swagger handler
+
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 // @title grafi API
@@ -20,6 +22,9 @@ import (
 func main() {
 	app := fiber.New()
 	settings := config.NewSettings()
+
+	// Initialize default config
+	app.Use(cors.New())
 
 	app.Get("/swagger/*", swagger.HandlerDefault) // default
 
