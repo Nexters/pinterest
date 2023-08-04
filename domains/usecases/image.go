@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"strings"
 	"time"
@@ -38,7 +39,7 @@ func (i *ImageService) GeneratePresignedUrl(ctx context.Context, filename string
 
 	imageName := uuid.New().String()
 	ext := getExtension(filename)
-	objectKey := imageName + "." + ext // S3에 저장될 파일 이름
+	objectKey := fmt.Sprintf("%s.%s", imageName, ext) // S3에 저장될 파일 이름
 
 	s3client := s3.NewFromConfig(cfg)
 	presignClient := s3.NewPresignClient(s3client)
