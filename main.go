@@ -41,15 +41,18 @@ func main() {
 	photoCutSvc := usecases.NewPhotoCutService(photoCutRepo, filmRepo)
 	filmSvc := usecases.NewFilmService(filmRepo, userRepo)
 
+	imageSvc := usecases.NewImageService()
+
 	// create controllers with route Films
 	root := controllers.NewRootController(app.Group("/"))
 	user := controllers.NewUserController(app.Group("/user"), userSvc)
 	auth := controllers.NewAuthController(app.Group("/auth"), userSvc)
 	photo_cut := controllers.NewPhotoCutController(app.Group("/photo-cut"), photoCutSvc)
 	film := controllers.NewFilmController(app.Group("/film"), filmSvc)
+	image := controllers.NewImageController(app.Group("/image"), imageSvc)
 
 	// bind routes
-	controllers.BindRoutes(root, user, auth, photo_cut, film)
+	controllers.BindRoutes(root, user, auth, photo_cut, film, image)
 
 	app.Listen(":8080")
 }
