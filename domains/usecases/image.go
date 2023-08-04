@@ -3,12 +3,14 @@ package usecases
 import (
 	"context"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/Nexters/pinterest/domains/dto"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/google/uuid"
 )
 
 type ImageService struct {
@@ -18,7 +20,7 @@ func NewImageService() *ImageService {
 	return &ImageService{}
 }
 
-func (i *ImageService) GeneratePresignedUrl(ctx context.Context) (imageUploadresponse dto.ImageUploadResponse, err error) {
+func (i *ImageService) GeneratePresignedUrl(ctx context.Context, filename string) (imageUploadresponse dto.ImageUploadResponse, err error) {
 	// 파일 가져온 뒤, 버킷 업로드
 	region := "ap-northeast-2"
 	bucketName := os.Getenv("S3_BUCKET_NAME")
@@ -34,8 +36,9 @@ func (i *ImageService) GeneratePresignedUrl(ctx context.Context) (imageUploadres
 		return
 	}
 
-	// Presigned URL 생성에 필요한 매개변수 설정
-	objectKey := "hahaha.png" // S3에 저장될 파일 이름
+	imageName := uuid.New().String()
+	ext := getExtension(filename)
+	objectKey := imageName + "." + ext // S3에 저장될 파일 이름
 
 	s3client := s3.NewFromConfig(cfg)
 	presignClient := s3.NewPresignClient(s3client)
@@ -52,4 +55,17 @@ func (i *ImageService) GeneratePresignedUrl(ctx context.Context) (imageUploadres
 	}
 
 	return
+}
+
+func getExtension(image string) string {
+	imageName := strings.ToLower(image)
+
+	// 파일 이름에서 마지막 점 이후의 부분을 확장자로 간주
+	parts := strings.Split(imageName, ".")
+	if len(parts) > 1 {
+		return parts[len(parts)-1]
+	}
+
+	// 확장자가 없을 경우 jpg로 기본 설정
+	return "jpg"
 }

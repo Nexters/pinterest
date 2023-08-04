@@ -19,7 +19,11 @@ func (i *Image) Bind() {
 }
 
 func (i *Image) getPresignedUrl(c *fiber.Ctx) error {
-	imageDto, err := i.svc.GeneratePresignedUrl(c.Context())
+	filename := c.Query("filename")
+	if filename == "" {
+		return fiber.NewError(fiber.StatusBadRequest, "파일 이름이 존재하지 않습니다.")
+	}
+	imageDto, err := i.svc.GeneratePresignedUrl(c.Context(), filename)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
