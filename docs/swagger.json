@@ -8,7 +8,7 @@
         },
         "version": "1.0"
     },
-    "host": "https://api.grafi.cc",
+    "host": "api.grafi.cc",
     "basePath": "/",
     "paths": {
         "/": {

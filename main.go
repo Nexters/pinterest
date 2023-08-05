@@ -17,7 +17,7 @@ import (
 // @version 1.0
 // @description grafi API
 // @contact.email chaewonkong@gmail.com
-// @host https://api.grafi.cc
+// @host api.grafi.cc
 // @BasePath /
 func main() {
 	app := fiber.New()
