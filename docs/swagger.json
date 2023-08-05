@@ -162,6 +162,12 @@
                             "type": "string"
                         }
                     },
+                    "404": {
+                        "description": "Conflict: 해당 id의 film이 존재하지 않는 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -202,6 +208,12 @@
                     },
                     "400": {
                         "description": "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Conflict: 해당 id의 user가 존재하지 않는 경우",
                         "schema": {
                             "type": "string"
                         }
@@ -251,7 +263,7 @@
                         }
                     },
                     "404": {
-                        "description": "Conflic: 해당 id의 film이 존재하지 않는 경우",
+                        "description": "Conflict: 해당 id의 film이 존재하지 않는 경우",
                         "schema": {
                             "type": "string"
                         }
@@ -294,6 +306,214 @@
                     },
                     "400": {
                         "description": "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Conflict: 해당 id의 film이 존재하지 않는 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/photo-cuts": {
+            "put": {
+                "description": "Edit Photo Cut",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "photo_cut"
+                ],
+                "summary": "포토컷 수정",
+                "parameters": [
+                    {
+                        "description": "photo_cut_id, title, text, image, link, film_id",
+                        "name": "photo_cut",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.PhotoCutUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Conflict: 해당 id의 photo_cut이 존재하지 않는 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create Photo Cut",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "photo_cut"
+                ],
+                "summary": "포토컷 생성",
+                "parameters": [
+                    {
+                        "description": "title, text, link, image, film_id",
+                        "name": "photo_cut_id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.PhotoCutCreationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.PhotoCutDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Conflict: 해당 id의 film이 존재하지 않는 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/photo-cuts/{photo_cut_id}": {
+            "get": {
+                "description": "Find Photo Cut by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "photo_cut"
+                ],
+                "summary": "포토컷 ID로 포토컷 정보 가져오기",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "photo_cut_id",
+                        "name": "photo_cut_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.PhotoCutDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Conflict: 해당 id의 photo_cut이 존재하지 않는 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete Photo Cut",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "photo_cut"
+                ],
+                "summary": "포토컷 삭제",
+                "parameters": [
+                    {
+                        "description": "photo_cut_id, title, text, image, link, film_id",
+                        "name": "photo_cut",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.PhotoCutUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Conflict: 해당 id의 photo_cut이 존재하지 않는 경우",
                         "schema": {
                             "type": "string"
                         }
@@ -487,6 +707,30 @@
                 }
             }
         },
+        "dto.PhotoCutCreationRequest": {
+            "type": "object",
+            "required": [
+                "film_id",
+                "title"
+            ],
+            "properties": {
+                "film_id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.PhotoCutDetailResponse": {
             "type": "object",
             "properties": {
@@ -504,6 +748,33 @@
                 },
                 "link": {
                     "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.PhotoCutUpdateRequest": {
+            "type": "object",
+            "required": [
+                "film_id",
+                "photo_cut_id"
+            ],
+            "properties": {
+                "film_id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "photo_cut_id": {
+                    "type": "integer"
                 },
                 "text": {
                     "type": "string"
