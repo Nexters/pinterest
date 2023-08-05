@@ -87,6 +87,233 @@ const docTemplate = `{
                 }
             }
         },
+        "/films": {
+            "get": {
+                "description": "Find All Films",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "film"
+                ],
+                "summary": "회원의 모든 필름 가져오기",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user_id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.Film"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Edit Film",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "film"
+                ],
+                "summary": "필름 수정",
+                "parameters": [
+                    {
+                        "description": "film_id, title",
+                        "name": "film",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.FilmUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create Film",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "film"
+                ],
+                "summary": "필름 생성",
+                "parameters": [
+                    {
+                        "description": "user_id, title",
+                        "name": "film",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.FilmCreationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.FilmDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/films/{film_id}": {
+            "get": {
+                "description": "Find Film by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "film"
+                ],
+                "summary": "필름 ID로 필름 정보 가져오기",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "film_id",
+                        "name": "film_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.FilmDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Conflic: 해당 id의 film이 존재하지 않는 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete Film",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "film"
+                ],
+                "summary": "필름 삭제",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "film_id",
+                        "name": "film_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
             "post": {
                 "description": "Create User",
@@ -185,6 +412,114 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.Film": {
+            "type": "object",
+            "properties": {
+                "film_id": {
+                    "type": "integer"
+                },
+                "likes": {
+                    "type": "integer"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "photo_cut_count": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.FilmCreationRequest": {
+            "type": "object",
+            "required": [
+                "title",
+                "user_id"
+            ],
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.FilmDetailResponse": {
+            "type": "object",
+            "properties": {
+                "film_id": {
+                    "type": "integer"
+                },
+                "likes": {
+                    "type": "integer"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "photo_cut_count": {
+                    "type": "integer"
+                },
+                "photo_cuts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.PhotoCutDetailResponse"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.FilmUpdateRequest": {
+            "type": "object",
+            "required": [
+                "film_id",
+                "title"
+            ],
+            "properties": {
+                "film_id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.PhotoCutDetailResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "film_id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "likes": {
+                    "type": "integer"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.UserCreationRequest": {
             "type": "object",
             "required": [
