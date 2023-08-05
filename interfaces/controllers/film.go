@@ -36,7 +36,7 @@ func (f *Film) Bind() {
 // @Param        film_id   path     uint  true  "film_id"
 // @Success      200  {object}  dto.FilmDetailResponse
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
-// @failure      404              {string} string   "Conflic: 해당 id의 film이 존재하지 않는 경우"
+// @failure      404              {string} string   "Conflict: 해당 id의 film이 존재하지 않는 경우"
 // @failure      500  {string}   string   "Internal Server Error"
 // @Router       /films/{film_id} [get]
 func (f *Film) getFilm(c *fiber.Ctx) error {
@@ -68,6 +68,7 @@ func (f *Film) getFilm(c *fiber.Ctx) error {
 // @Param        film   body     dto.FilmCreationRequest  true  "user_id, title"
 // @Success      200  {object}  dto.FilmDetailResponse
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
+// @failure      404              {string} string   "Conflict: 해당 id의 user가 존재하지 않는 경우"
 // @failure      500  {string}   string   "Internal Server Error"
 // @Router       /films [post]
 func (f *Film) saveFilm(c *fiber.Ctx) error {
@@ -85,7 +86,12 @@ func (f *Film) saveFilm(c *fiber.Ctx) error {
 
 	filmDto, err := f.svc.CreateFilm(c.Context(), *dto)
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *errors.NotFoundError:
+			return fiber.NewError(fiber.StatusNotFound, err.Error())
+		default:
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
 	}
 
 	return c.JSON(filmDto)
