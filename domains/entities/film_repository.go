@@ -42,7 +42,7 @@ func (fr *FilmRepository) SaveFilm(ctx context.Context, film Film) (Film, error)
 }
 
 func (fr *FilmRepository) FindAllFilmsInOrder(ctx context.Context, userId string) (films []Film, err error) {
-	tx := fr.DB.Where("user_id = ?", userId).Order("order DESC").Find(&films)
+	tx := fr.DB.Where("user_id = ?", userId).Order("`order` DESC").Find(&films)
 	if tx.Error != nil {
 		err = tx.Error
 		return

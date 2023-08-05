@@ -1,9 +1,10 @@
 package dto
 
 type Film struct {
-	Title         string `json:"title" validate:"required"`
+	ID            uint   `json:"film_id"`
+	Title         string `json:"title"`
 	Order         uint   `json:"order"`
-	PhotoCutCount uint   `json:"photo_cut_count" validate:"gte=0"`
-	Likes         uint   `json:"likes" validate:"gte=0"`
+	PhotoCutCount uint   `json:"photo_cut_count"`
+	Likes         uint   `json:"likes"`
 	UserID        string `json:"user_id"`
 }
