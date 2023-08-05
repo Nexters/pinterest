@@ -53,7 +53,7 @@ definitions:
     - password
     - user_id
     type: object
-host: https://api.grafi.cc
+host: api.grafi.cc
 info:
   contact:
     email: chaewonkong@gmail.com
