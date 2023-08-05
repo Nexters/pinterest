@@ -83,6 +83,9 @@ func (pc *PhotoCutService) UpdatePhotoCut(ctx context.Context, photoCutUpdateReq
 	if photoCutUpdateRequest.Image != "" {
 		photoCut.Image = photoCutUpdateRequest.Image
 	}
+	if photoCutUpdateRequest.Link != "" {
+		photoCut.Link = photoCutUpdateRequest.Link
+	}
 
 	err = pc.repo.Save(&photoCut).Error
 	return
