@@ -45,11 +45,11 @@ func main() {
 
 	// create controllers with route Films
 	root := controllers.NewRootController(app.Group("/"))
-	user := controllers.NewUserController(app.Group("/user"), userSvc)
+	user := controllers.NewUserController(app.Group("/users"), userSvc)
 	auth := controllers.NewAuthController(app.Group("/auth"), userSvc)
-	photo_cut := controllers.NewPhotoCutController(app.Group("/photo-cut"), photoCutSvc)
-	film := controllers.NewFilmController(app.Group("/film"), filmSvc)
-	image := controllers.NewImageController(app.Group("/image"), imageSvc)
+	photo_cut := controllers.NewPhotoCutController(app.Group("/photo-cuts"), photoCutSvc)
+	film := controllers.NewFilmController(app.Group("/films"), filmSvc)
+	image := controllers.NewImageController(app.Group("/images"), imageSvc)
 
 	// bind routes
 	controllers.BindRoutes(root, user, auth, photo_cut, film, image)
