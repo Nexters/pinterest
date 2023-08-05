@@ -131,6 +131,7 @@ func (f *Film) getAllFilms(c *fiber.Ctx) error {
 // @Param        film   body     dto.FilmUpdateRequest  true  "film_id, title"
 // @Success      200  {string}  string
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
+// @failure      404              {string} string   "Conflict: 해당 id의 film이 존재하지 않는 경우"
 // @failure      500  {string}   string   "Internal Server Error"
 // @Router       /films [put]
 func (f *Film) editFilm(c *fiber.Ctx) error {
@@ -148,7 +149,12 @@ func (f *Film) editFilm(c *fiber.Ctx) error {
 
 	err = f.svc.UpdateFilm(c.Context(), *dto)
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *errors.NotFoundError:
+			return fiber.NewError(fiber.StatusNotFound, err.Error())
+		default:
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
 	}
 
 	return c.SendString("필름 수정 성공")
@@ -163,6 +169,7 @@ func (f *Film) editFilm(c *fiber.Ctx) error {
 // @Param        film_id   path     uint  true  "film_id"
 // @Success      200  {string}  string
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
+// @failure      404              {string} string   "Conflict: 해당 id의 film이 존재하지 않는 경우"
 // @failure      500  {string}   string   "Internal Server Error"
 // @Router       /films/{film_id} [delete]
 func (f *Film) deleteFilm(c *fiber.Ctx) error {
@@ -174,7 +181,12 @@ func (f *Film) deleteFilm(c *fiber.Ctx) error {
 
 	err = f.svc.DeleteFilm(c.Context(), uint(filmId))
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		switch err.(type) {
+		case *errors.NotFoundError:
+			return fiber.NewError(fiber.StatusNotFound, err.Error())
+		default:
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
 	}
 
 	return c.SendString("필름 삭제 성공")
