@@ -40,16 +40,16 @@ func (u *User) getAllUsers(c *fiber.Ctx) error {
 }
 
 // user
-// @Summary      user
+// @Summary      users
 // @Description  Find User by ID
-// @Tags         user
+// @Tags         users
 // @Accept       json
 // @Produce      json
 // @Param        user_id   path     string  true  "user_id"
 // @Success      200  {object}  dto.UserDetailResponse
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
 // @failure      500  {string}   string   "Internal Server Error"
-// @Router       /user/{user_id} [get]
+// @Router       /users/{user_id} [get]
 func (u *User) getUserByID(c *fiber.Ctx) error {
 	params := dto.UserDetailRequest{}
 	err := c.ParamsParser(&params)
@@ -74,9 +74,9 @@ func (u *User) getUserByID(c *fiber.Ctx) error {
 }
 
 // user
-// @Summary      user
+// @Summary      users
 // @Description  Create User
-// @Tags         user
+// @Tags         users
 // @Accept       json
 // @Produce      json
 // @Param        user   body     dto.UserCreationRequest  true  "user_id, password, name(닉네임)"
@@ -84,7 +84,7 @@ func (u *User) getUserByID(c *fiber.Ctx) error {
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
 // @failure      409  {string}   string   "Conflict: 이미 id가 존재하는 경우"
 // @failure      500  {string}   string   "Internal Server Error"
-// @Router       /user [post]
+// @Router       /users [post]
 func (u *User) saveUser(c *fiber.Ctx) error {
 	var userCreationRequest dto.UserCreationRequest
 	err := c.BodyParser(&userCreationRequest)
@@ -113,16 +113,16 @@ func (u *User) saveUser(c *fiber.Ctx) error {
 }
 
 // user
-// @Summary      user
+// @Summary      users
 // @Description  Create User
-// @Tags         user
+// @Tags         users
 // @Accept       json
 // @Produce      json
 // @Param        user   body     dto.UserCreationRequest  true  "user_id, password, name(닉네임)"
-// @Success      200  {object}  dto.UserUpdateResponse
+// @Success      200  {object}  dto.UserDetailResponse
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
 // @failure      500  {string}   string   "Internal Server Error"
-// @Router       /user [put]
+// @Router       /users [put]
 func (u *User) updateUser(c *fiber.Ctx) error {
 	userUpdateParam := dto.UserUpdateRequest{}
 	err := c.BodyParser(&userUpdateParam)
@@ -145,16 +145,16 @@ func (u *User) updateUser(c *fiber.Ctx) error {
 }
 
 // user
-// @Summary      user
+// @Summary      users
 // @Description  Find all visit logs from given user
-// @Tags         user
+// @Tags         users
 // @Accept       json
 // @Produce      json
 // @Param        user_id   path     string  true  "user_id"
 // @Success      200  {object}  dto.UserDetailResponse
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
 // @failure      500  {string}   string   "Internal Server Error"
-// @Router       /user/{user_id}/visit-logs [get]
+// @Router       /users/{user_id}/visit-logs [get]
 func (u *User) getAllVisitLogs(c *fiber.Ctx) error {
 	userID := c.Params("userId")
 	logs, err := u.logSvc.FindAll(c.Context(), userID)
@@ -166,17 +166,18 @@ func (u *User) getAllVisitLogs(c *fiber.Ctx) error {
 }
 
 // user
-// @Summary      user
+// @Summary      users
 // @Description  Create User's visit log
-// @Tags         user
+// @Tags         users
 // @Accept       json
 // @Produce      json
-// @Param        user   body     dto.VisitLogCreationRequest  true  "visit log 생성"
+// @Param        user_id   path     string  true  "user_id"
+// @Param        visitLog   body     dto.VisitLogCreationRequest  true  "visit log 생성"
 // @Success      201  {object}  dto.VisitLogCreationResponse
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
 // @failure      409  {string}   string   "Conflict: 이미 id가 존재하는 경우"
 // @failure      500  {string}   string   "Internal Server Error"
-// @Router       /user/{user_id}/visit-logs [post]
+// @Router       /users/{user_id}/visit-logs [post]
 func (u *User) saveVisitLog(c *fiber.Ctx) error {
 	userID := c.Params("userId")
 	dto := dto.VisitLogCreationRequest{
@@ -202,6 +203,18 @@ func (u *User) saveVisitLog(c *fiber.Ctx) error {
 	return c.JSON(log)
 }
 
+// user
+// @Summary      users
+// @Description  Create User's visit log
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        user_id   path     string  true  "user_id"
+// @Param        log_id   path     string  true  "log_id"
+// @Success      200  {string}  "ok"
+// @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
+// @failure      500  {string}   string   "Internal Server Error"
+// @Router       /users/{user_id}/visit-logs/{log_id} [delete]
 func (u *User) deleteVisitLog(c *fiber.Ctx) error {
 	logID := c.Params("logId")
 	i, err := strconv.ParseUint(logID, 10, 64)
