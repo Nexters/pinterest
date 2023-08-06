@@ -35,17 +35,19 @@ func main() {
 	userRepo := entities.NewUserRepository(db.DB)
 	photoCutRepo := entities.NewPhotoCutRepository(db.DB)
 	filmRepo := entities.NewFilmRepository(db.DB)
+	logRepo := entities.NewVisitLogRepository(db.DB)
 
 	// usecases/services
 	userSvc := usecases.NewUserService(userRepo)
 	photoCutSvc := usecases.NewPhotoCutService(photoCutRepo, filmRepo)
 	filmSvc := usecases.NewFilmService(filmRepo, userRepo)
+	logSvc := usecases.NewVisitLogService(logRepo)
 
 	imageSvc := usecases.NewImageService()
 
 	// create controllers with route Films
 	root := controllers.NewRootController(app.Group("/"))
-	user := controllers.NewUserController(app.Group("/users"), userSvc)
+	user := controllers.NewUserController(app.Group("/users"), userSvc, logSvc)
 	auth := controllers.NewAuthController(app.Group("/auth"), userSvc)
 	photo_cut := controllers.NewPhotoCutController(app.Group("/photo-cuts"), photoCutSvc)
 	film := controllers.NewFilmController(app.Group("/films"), filmSvc)

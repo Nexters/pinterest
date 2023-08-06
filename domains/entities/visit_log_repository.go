@@ -3,6 +3,7 @@ package entities
 import (
 	"context"
 
+	"github.com/Nexters/pinterest/domains/errors"
 	"gorm.io/gorm"
 )
 
@@ -10,12 +11,12 @@ type VisitLogRepository struct {
 	*gorm.DB
 }
 
-func (v *VisitLogRepository) NewVisitLogRepository(db *gorm.DB) *VisitLogRepository {
+func NewVisitLogRepository(db *gorm.DB) *VisitLogRepository {
 	return &VisitLogRepository{db}
 }
 
 func (v *VisitLogRepository) FindAllVisitLogsByUserID(ctx context.Context, userID string) (logs []VisitLog, err error) {
-	tx := v.DB.Find(&logs)
+	tx := v.DB.Where("user_id = ?", userID).Find(&logs)
 	if tx.Error != nil {
 		err = tx.Error
 	}
@@ -24,7 +25,7 @@ func (v *VisitLogRepository) FindAllVisitLogsByUserID(ctx context.Context, userI
 }
 
 func (v *VisitLogRepository) CreateVisitLog(ctx context.Context, logParam VisitLog) (log VisitLog, err error) {
-	tx := v.DB.Save(&logParam)
+	tx := v.DB.Create(&logParam)
 	if tx.Error != nil {
 		err = tx.Error
 		return
@@ -42,7 +43,7 @@ func (v *VisitLogRepository) DeleteVisitLog(ctx context.Context, log VisitLog) e
 	}
 
 	if tx.RowsAffected == 0 {
-		return nil
+		return errors.NewDeleteFailedError("VisitLog")
 	}
 	return nil
 }
