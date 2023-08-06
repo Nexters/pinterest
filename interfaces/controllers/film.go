@@ -66,7 +66,7 @@ func (f *Film) getFilm(c *fiber.Ctx) error {
 // @Accept       json
 // @Produce      json
 // @Param        film   body     dto.FilmCreationRequest  true  "user_id, title"
-// @Success      200  {object}  dto.FilmDetailResponse
+// @Success      201  {object}  dto.FilmDetailResponse
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
 // @failure      404              {string} string   "Conflict: 해당 id의 user가 존재하지 않는 경우"
 // @failure      500  {string}   string   "Internal Server Error"
