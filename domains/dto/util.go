@@ -42,16 +42,17 @@ func ToVisitLogDtoList(visitLogList []entities.VisitLog) (visitLogDtoList []Visi
 	return
 }
 
-func ToPhotoCutDtoList(itemList []entities.PhotoCut) (photoCutDtoList []PhotoCutDetailResponse, err error) {
-	for _, item := range itemList {
+func ToPhotoCutDtoList(photoCutList []entities.PhotoCut) (photoCutDtoList []PhotoCutDetailResponse, err error) {
+	for _, photoCut := range photoCutList {
 		photoCutDetail := PhotoCutDetailResponse{
-			Title:     item.Title,
-			Text:      item.Text,
-			Link:      item.Link,
-			Image:     item.Image,
-			Likes:     item.Likes,
-			FilmID:    item.FilmID,
-			CreatedAt: item.CreatedAt,
+			ID:        photoCut.ID,
+			Title:     photoCut.Title,
+			Text:      photoCut.Text,
+			Link:      photoCut.Link,
+			Image:     photoCut.Image,
+			Likes:     photoCut.Likes,
+			FilmID:    photoCut.FilmID,
+			CreatedAt: photoCut.CreatedAt,
 		}
 		photoCutDtoList = append(photoCutDtoList, photoCutDetail)
 	}
