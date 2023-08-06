@@ -23,6 +23,7 @@ func (pc *PhotoCutService) FindByPhotoCutId(ctx context.Context, photoCutId uint
 	}
 
 	photoCutResponse = dto.PhotoCutDetailResponse{
+		ID:        photoCut.ID,
 		Title:     photoCut.Title,
 		Text:      photoCut.Text,
 		Link:      photoCut.Link,
@@ -56,7 +57,15 @@ func (pc *PhotoCutService) CreatePhotoCut(
 		return
 	}
 
+	// 포토컷 생성 시 film의 photo_cut_count가 1 증가
+	film.PhotoCutCount += 1
+	err = pc.frepo.Save(&film).Error
+	if err != nil {
+		return
+	}
+
 	photoCutResponse = dto.PhotoCutDetailResponse{
+		ID:        savedPhotoCut.ID,
 		Title:     savedPhotoCut.Title,
 		Text:      savedPhotoCut.Text,
 		Link:      savedPhotoCut.Link,
