@@ -77,3 +77,16 @@ func (u *UserService) LoginUser(ctx context.Context, loginDto dto.UserLoginReque
 	}
 	return
 }
+
+func (u *UserService) UpdateUser(ctx context.Context, updateDto dto.UserUpdateRequest) (userDetail dto.UserDetailResponse, err error) {
+	userUpdateParam := updateDto.ToEntity()
+
+	user, err := u.repo.UpdateUser(ctx, userUpdateParam)
+	if err != nil {
+		return
+	}
+
+	userDetail = userDetail.FromEntity(user)
+
+	return
+}

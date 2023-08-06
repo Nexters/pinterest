@@ -21,6 +21,7 @@ func (u *User) Bind() {
 	u.router.Get("", u.getAllUsers)
 	u.router.Get("/:userId", u.getUserByID)
 	u.router.Post("", u.saveUser)
+	u.router.Put("", u.updateUser)
 }
 
 func (u *User) getAllUsers(c *fiber.Ctx) error {
@@ -103,4 +104,36 @@ func (u *User) saveUser(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(userDto)
+}
+
+// user
+// @Summary      user
+// @Description  Create User
+// @Tags         user
+// @Accept       json
+// @Produce      json
+// @Param        user   body     dto.UserCreationRequest  true  "user_id, password, name(닉네임)"
+// @Success      200  {object}  dto.UserUpdateResponse
+// @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
+// @failure      500  {string}   string   "Internal Server Error"
+// @Router       /user [put]
+func (u *User) updateUser(c *fiber.Ctx) error {
+	userUpdateParam := dto.UserUpdateRequest{}
+	err := c.BodyParser(&userUpdateParam)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	validate := validator.New()
+	err = validate.Struct(userUpdateParam)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	userResponse, err := u.svc.UpdateUser(c.Context(), userUpdateParam)
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(userResponse)
 }

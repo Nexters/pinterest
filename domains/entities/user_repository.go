@@ -57,3 +57,25 @@ func (ur *UserRepository) SaveUser(ctx context.Context, user User) (createdUser 
 
 	return
 }
+
+func (ur *UserRepository) UpdateUser(ctx context.Context, user User) (res User, err error) {
+	tx := ur.DB.Model(user).Updates(user)
+
+	if tx.Error != nil {
+		err = tx.Error
+		return
+	}
+
+	if tx.RowsAffected == 0 {
+		err = errors.NewUpdateFailedError("User")
+		return
+	}
+
+	tx = ur.DB.Where("id = ?", user.ID).First(&res)
+	if tx.Error != nil {
+		err = tx.Error
+		return
+	}
+
+	return
+}

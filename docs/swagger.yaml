@@ -1,5 +1,110 @@
 basePath: /
 definitions:
+  dto.Film:
+    properties:
+      film_id:
+        type: integer
+      likes:
+        type: integer
+      order:
+        type: integer
+      photo_cut_count:
+        type: integer
+      title:
+        type: string
+      user_id:
+        type: string
+    type: object
+  dto.FilmCreationRequest:
+    properties:
+      title:
+        type: string
+      user_id:
+        type: string
+    required:
+    - title
+    - user_id
+    type: object
+  dto.FilmDetailResponse:
+    properties:
+      film_id:
+        type: integer
+      likes:
+        type: integer
+      order:
+        type: integer
+      photo_cut_count:
+        type: integer
+      photo_cuts:
+        items:
+          $ref: '#/definitions/dto.PhotoCutDetailResponse'
+        type: array
+      title:
+        type: string
+      user_id:
+        type: string
+    type: object
+  dto.FilmUpdateRequest:
+    properties:
+      film_id:
+        type: integer
+      title:
+        type: string
+    required:
+    - film_id
+    - title
+    type: object
+  dto.PhotoCutCreationRequest:
+    properties:
+      film_id:
+        type: integer
+      image:
+        type: string
+      link:
+        type: string
+      text:
+        type: string
+      title:
+        type: string
+    required:
+    - film_id
+    - title
+    type: object
+  dto.PhotoCutDetailResponse:
+    properties:
+      created_at:
+        type: string
+      film_id:
+        type: integer
+      image:
+        type: string
+      likes:
+        type: integer
+      link:
+        type: string
+      text:
+        type: string
+      title:
+        type: string
+    type: object
+  dto.PhotoCutUpdateRequest:
+    properties:
+      film_id:
+        type: integer
+      image:
+        type: string
+      link:
+        type: string
+      photo_cut_id:
+        type: integer
+      text:
+        type: string
+      title:
+        type: string
+    required:
+    - film_id
+    - photo_cut_id
+    type: object
   dto.UserCreationRequest:
     properties:
       name:
@@ -107,6 +212,301 @@ paths:
       summary: Login
       tags:
       - auth
+  /films:
+    get:
+      consumes:
+      - application/json
+      description: Find All Films
+      parameters:
+      - description: user_id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.Film'
+            type: array
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: 회원의 모든 필름 가져오기
+      tags:
+      - film
+    post:
+      consumes:
+      - application/json
+      description: Create Film
+      parameters:
+      - description: user_id, title
+        in: body
+        name: film
+        required: true
+        schema:
+          $ref: '#/definitions/dto.FilmCreationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.FilmDetailResponse'
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "404":
+          description: 'Conflict: 해당 id의 user가 존재하지 않는 경우'
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: 필름 생성
+      tags:
+      - film
+    put:
+      consumes:
+      - application/json
+      description: Edit Film
+      parameters:
+      - description: film_id, title
+        in: body
+        name: film
+        required: true
+        schema:
+          $ref: '#/definitions/dto.FilmUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "404":
+          description: 'Conflict: 해당 id의 film이 존재하지 않는 경우'
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: 필름 수정
+      tags:
+      - film
+  /films/{film_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Film
+      parameters:
+      - description: film_id
+        in: path
+        name: film_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "404":
+          description: 'Conflict: 해당 id의 film이 존재하지 않는 경우'
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: 필름 삭제
+      tags:
+      - film
+    get:
+      consumes:
+      - application/json
+      description: Find Film by ID
+      parameters:
+      - description: film_id
+        in: path
+        name: film_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.FilmDetailResponse'
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "404":
+          description: 'Conflict: 해당 id의 film이 존재하지 않는 경우'
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: 필름 ID로 필름 정보 가져오기
+      tags:
+      - film
+  /photo-cuts:
+    post:
+      consumes:
+      - application/json
+      description: Create Photo Cut
+      parameters:
+      - description: title, text, link, image, film_id
+        in: body
+        name: photo_cut_id
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PhotoCutCreationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.PhotoCutDetailResponse'
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "404":
+          description: 'Conflict: 해당 id의 film이 존재하지 않는 경우'
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: 포토컷 생성
+      tags:
+      - photo_cut
+    put:
+      consumes:
+      - application/json
+      description: Edit Photo Cut
+      parameters:
+      - description: photo_cut_id, title, text, image, link, film_id
+        in: body
+        name: photo_cut
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PhotoCutUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "404":
+          description: 'Conflict: 해당 id의 photo_cut이 존재하지 않는 경우'
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: 포토컷 수정
+      tags:
+      - photo_cut
+  /photo-cuts/{photo_cut_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Photo Cut
+      parameters:
+      - description: photo_cut_id, title, text, image, link, film_id
+        in: body
+        name: photo_cut
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PhotoCutUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "404":
+          description: 'Conflict: 해당 id의 photo_cut이 존재하지 않는 경우'
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: 포토컷 삭제
+      tags:
+      - photo_cut
+    get:
+      consumes:
+      - application/json
+      description: Find Photo Cut by ID
+      parameters:
+      - description: photo_cut_id
+        in: path
+        name: photo_cut_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PhotoCutDetailResponse'
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "404":
+          description: 'Conflict: 해당 id의 photo_cut이 존재하지 않는 경우'
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: 포토컷 ID로 포토컷 정보 가져오기
+      tags:
+      - photo_cut
   /user:
     post:
       consumes:

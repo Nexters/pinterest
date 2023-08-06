@@ -8,6 +8,7 @@ import (
 func ToFilmDtoList(FilmList []entities.Film) (FilmDtoList []Film, err error) {
 	for _, film := range FilmList {
 		FilmInfo := Film{
+			ID:            film.ID,
 			Title:         film.Title,
 			Order:         film.Order,
 			PhotoCutCount: film.PhotoCutCount,
