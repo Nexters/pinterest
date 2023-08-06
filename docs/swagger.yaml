@@ -382,7 +382,7 @@ paths:
       parameters:
       - description: title, text, link, image, film_id
         in: body
-        name: photo_cut_id
+        name: photo_cut
         required: true
         schema:
           $ref: '#/definitions/dto.PhotoCutCreationRequest'
@@ -447,12 +447,11 @@ paths:
       - application/json
       description: Delete Photo Cut
       parameters:
-      - description: photo_cut_id, title, text, image, link, film_id
-        in: body
-        name: photo_cut
+      - description: photo_cut_id
+        in: path
+        name: photo_cut_id
         required: true
-        schema:
-          $ref: '#/definitions/dto.PhotoCutUpdateRequest'
+        type: integer
       produces:
       - application/json
       responses:
@@ -532,6 +531,35 @@ paths:
             type: string
         "409":
           description: 'Conflict: 이미 id가 존재하는 경우'
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: user
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: Create User
+      parameters:
+      - description: user_id, password, name(닉네임)
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserCreationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserDetailResponse'
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
           schema:
             type: string
         "500":

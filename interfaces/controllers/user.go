@@ -113,7 +113,7 @@ func (u *User) saveUser(c *fiber.Ctx) error {
 // @Accept       json
 // @Produce      json
 // @Param        user   body     dto.UserCreationRequest  true  "user_id, password, name(닉네임)"
-// @Success      200  {object}  dto.UserUpdateResponse
+// @Success      200  {object}  dto.UserDetailResponse
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
 // @failure      500  {string}   string   "Internal Server Error"
 // @Router       /user [put]

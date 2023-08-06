@@ -398,7 +398,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "title, text, link, image, film_id",
-                        "name": "photo_cut_id",
+                        "name": "photo_cut",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -497,13 +497,11 @@ const docTemplate = `{
                 "summary": "포토컷 삭제",
                 "parameters": [
                     {
-                        "description": "photo_cut_id, title, text, image, link, film_id",
-                        "name": "photo_cut",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.PhotoCutUpdateRequest"
-                        }
+                        "type": "integer",
+                        "description": "photo_cut_id",
+                        "name": "photo_cut_id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -535,6 +533,50 @@ const docTemplate = `{
             }
         },
         "/user": {
+            "put": {
+                "description": "Create User",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "user",
+                "parameters": [
+                    {
+                        "description": "user_id, password, name(닉네임)",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserCreationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Create User",
                 "consumes": [
