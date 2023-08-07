@@ -17,11 +17,12 @@ func NewPhotoCutRepository(db *gorm.DB) *PhotoCutRepository {
 }
 
 func (pcr *PhotoCutRepository) FindPhotoCut(ctx context.Context, photoCutId uint) (photoCut PhotoCut, err error) {
-	tx := pcr.DB.First(&photoCut, photoCutId)
+	tx := pcr.First(&photoCut, photoCutId)
 	if tx.RowsAffected == 0 {
 		err = customerrors.NewNotFoundError("PhotoCut")
 		return
 	}
+
 	if tx.Error != nil {
 		err = tx.Error
 		return
@@ -31,17 +32,20 @@ func (pcr *PhotoCutRepository) FindPhotoCut(ctx context.Context, photoCutId uint
 
 func (pcr *PhotoCutRepository) SavePhotoCut(ctx context.Context, photoCut PhotoCut) (PhotoCut, error) {
 	tx := pcr.DB.Begin()
+	if err := tx.Error; err != nil {
+		return PhotoCut{}, err
+	}
 
 	// film 조회
 	var film Film
-	err := pcr.DB.First(&film, "id = ?", photoCut.FilmID).Error
+	err := tx.First(&film, "id = ?", photoCut.FilmID).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		tx.Rollback()
 		return photoCut, customerrors.NewNotFoundError("Film")
 	}
 
 	// photo cut 저장
-	err = pcr.DB.Create(&photoCut).Error
+	err = tx.Create(&photoCut).Error
 	if err != nil {
 		tx.Rollback()
 		return photoCut, customerrors.NewCreateFailedError("PhotoCut")
@@ -49,7 +53,7 @@ func (pcr *PhotoCutRepository) SavePhotoCut(ctx context.Context, photoCut PhotoC
 
 	// film의 photo_cut_count 증가
 	film.PhotoCutCount++
-	err = pcr.DB.Save(film).Error
+	err = tx.Save(film).Error
 	if err != nil {
 		tx.Rollback() // 에러 시 트랜잭션 롤백
 		return photoCut, err
