@@ -39,27 +39,15 @@ func (pc *PhotoCutService) CreatePhotoCut(
 	ctx context.Context,
 	photoCutCreationRequest dto.PhotoCutCreationRequest,
 ) (photoCutResponse dto.PhotoCutDetailResponse, err error) {
-	film, err := pc.frepo.FindFilm(ctx, photoCutCreationRequest.FilmID)
-	if err != nil {
-		return
-	}
-
 	photoCut := entities.PhotoCut{
 		Title:  photoCutCreationRequest.Title,
 		Text:   photoCutCreationRequest.Text,
 		Link:   photoCutCreationRequest.Link,
 		Image:  photoCutCreationRequest.Image,
-		FilmID: film.ID,
+		FilmID: photoCutCreationRequest.FilmID,
 	}
 
 	savedPhotoCut, err := pc.repo.SavePhotoCut(ctx, photoCut)
-	if err != nil {
-		return
-	}
-
-	// 포토컷 생성 시 film의 photo_cut_count가 1 증가
-	film.PhotoCutCount += 1
-	err = pc.frepo.Save(&film).Error
 	if err != nil {
 		return
 	}
