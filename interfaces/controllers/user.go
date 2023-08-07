@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"errors"
 	"strconv"
 
 	"github.com/Nexters/pinterest/domains/dto"
+	userError "github.com/Nexters/pinterest/domains/errors"
 	"github.com/Nexters/pinterest/domains/usecases"
 	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
@@ -224,6 +226,11 @@ func (u *User) deleteVisitLog(c *fiber.Ctx) error {
 
 	err = u.logSvc.Delete(c.Context(), uint(i))
 	if err != nil {
+		var targetError userError.DeleteFailedError
+		if errors.As(err, &targetError) {
+			return fiber.NewError(fiber.StatusNotFound, err.Error())
+		}
+
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
