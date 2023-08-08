@@ -54,6 +54,11 @@ definitions:
     - film_id
     - title
     type: object
+  dto.ImageUploadResponse:
+    properties:
+      presigned_url:
+        type: string
+    type: object
   dto.PhotoCutCreationRequest:
     properties:
       film_id:
@@ -373,6 +378,35 @@ paths:
       summary: 필름 ID로 필름 정보 가져오기
       tags:
       - film
+  /images/presigned-url:
+    get:
+      consumes:
+      - application/json
+      description: Get Presigned URL
+      parameters:
+      - description: filename
+        in: query
+        name: filename
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ImageUploadResponse'
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: presigned URL 발급
+      tags:
+      - image
   /photo-cuts:
     post:
       consumes:

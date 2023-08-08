@@ -325,6 +325,50 @@
                 }
             }
         },
+        "/images/presigned-url": {
+            "get": {
+                "description": "Get Presigned URL",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "image"
+                ],
+                "summary": "presigned URL 발급",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "filename",
+                        "name": "filename",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ImageUploadResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/photo-cuts": {
             "put": {
                 "description": "Edit Photo Cut",
@@ -745,6 +789,14 @@
                     "type": "integer"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ImageUploadResponse": {
+            "type": "object",
+            "properties": {
+                "presigned_url": {
                     "type": "string"
                 }
             }
