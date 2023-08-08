@@ -104,7 +104,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "user_id",
-                        "name": "id",
+                        "name": "user_id",
                         "in": "query",
                         "required": true
                     }
@@ -347,7 +347,7 @@ const docTemplate = `{
                 "summary": "포토컷 수정",
                 "parameters": [
                     {
-                        "description": "photo_cut_id, title, text, image, link, film_id",
+                        "description": "photo_cut_id, title, text, image, link",
                         "name": "photo_cut",
                         "in": "body",
                         "required": true,
@@ -798,6 +798,9 @@ const docTemplate = `{
                 "link": {
                     "type": "string"
                 },
+                "photo_cut_id": {
+                    "type": "integer"
+                },
                 "text": {
                     "type": "string"
                 },
@@ -809,13 +812,9 @@ const docTemplate = `{
         "dto.PhotoCutUpdateRequest": {
             "type": "object",
             "required": [
-                "film_id",
                 "photo_cut_id"
             ],
             "properties": {
-                "film_id": {
-                    "type": "integer"
-                },
                 "image": {
                     "type": "string"
                 },

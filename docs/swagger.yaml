@@ -82,6 +82,8 @@ definitions:
         type: integer
       link:
         type: string
+      photo_cut_id:
+        type: integer
       text:
         type: string
       title:
@@ -89,8 +91,6 @@ definitions:
     type: object
   dto.PhotoCutUpdateRequest:
     properties:
-      film_id:
-        type: integer
       image:
         type: string
       link:
@@ -102,7 +102,6 @@ definitions:
       title:
         type: string
     required:
-    - film_id
     - photo_cut_id
     type: object
   dto.UserCreationRequest:
@@ -220,7 +219,7 @@ paths:
       parameters:
       - description: user_id
         in: query
-        name: id
+        name: user_id
         required: true
         type: string
       produces:
@@ -413,7 +412,7 @@ paths:
       - application/json
       description: Edit Photo Cut
       parameters:
-      - description: photo_cut_id, title, text, image, link, film_id
+      - description: photo_cut_id, title, text, image, link
         in: body
         name: photo_cut
         required: true
