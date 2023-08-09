@@ -576,7 +576,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user": {
+        "/users": {
             "put": {
                 "description": "Create User",
                 "consumes": [
@@ -586,9 +586,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "users"
                 ],
-                "summary": "user",
+                "summary": "users",
                 "parameters": [
                     {
                         "description": "user_id, password, name(닉네임)",
@@ -630,9 +630,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "users"
                 ],
-                "summary": "user",
+                "summary": "users",
                 "parameters": [
                     {
                         "description": "user_id, password, name(닉네임)",
@@ -672,7 +672,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/{user_id}": {
+        "/users/{user_id}": {
             "get": {
                 "description": "Find User by ID",
                 "consumes": [
@@ -682,9 +682,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "users"
                 ],
-                "summary": "user",
+                "summary": "users",
                 "parameters": [
                     {
                         "type": "string",

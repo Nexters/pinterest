@@ -539,7 +539,7 @@ paths:
       summary: 포토컷 ID로 포토컷 정보 가져오기
       tags:
       - photo_cut
-  /user:
+  /users:
     post:
       consumes:
       - application/json
@@ -570,9 +570,9 @@ paths:
           description: Internal Server Error
           schema:
             type: string
-      summary: user
+      summary: users
       tags:
-      - user
+      - users
     put:
       consumes:
       - application/json
@@ -599,10 +599,10 @@ paths:
           description: Internal Server Error
           schema:
             type: string
-      summary: user
+      summary: users
       tags:
-      - user
-  /user/{user_id}:
+      - users
+  /users/{user_id}:
     get:
       consumes:
       - application/json
@@ -628,7 +628,7 @@ paths:
           description: Internal Server Error
           schema:
             type: string
-      summary: user
+      summary: users
       tags:
-      - user
+      - users
 swagger: "2.0"

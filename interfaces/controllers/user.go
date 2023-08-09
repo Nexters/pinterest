@@ -34,16 +34,16 @@ func (u *User) getAllUsers(c *fiber.Ctx) error {
 }
 
 // user
-// @Summary      user
+// @Summary      users
 // @Description  Find User by ID
-// @Tags         user
+// @Tags         users
 // @Accept       json
 // @Produce      json
 // @Param        user_id   path     string  true  "user_id"
 // @Success      200  {object}  dto.UserDetailResponse
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
 // @failure      500  {string}   string   "Internal Server Error"
-// @Router       /user/{user_id} [get]
+// @Router       /users/{user_id} [get]
 func (u *User) getUserByID(c *fiber.Ctx) error {
 	params := dto.UserDetailRequest{}
 	err := c.ParamsParser(&params)
@@ -68,9 +68,9 @@ func (u *User) getUserByID(c *fiber.Ctx) error {
 }
 
 // user
-// @Summary      user
+// @Summary      users
 // @Description  Create User
-// @Tags         user
+// @Tags         users
 // @Accept       json
 // @Produce      json
 // @Param        user   body     dto.UserCreationRequest  true  "user_id, password, name(닉네임)"
@@ -78,7 +78,7 @@ func (u *User) getUserByID(c *fiber.Ctx) error {
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
 // @failure      409  {string}   string   "Conflict: 이미 id가 존재하는 경우"
 // @failure      500  {string}   string   "Internal Server Error"
-// @Router       /user [post]
+// @Router       /users [post]
 func (u *User) saveUser(c *fiber.Ctx) error {
 	var userCreationRequest dto.UserCreationRequest
 	err := c.BodyParser(&userCreationRequest)
@@ -107,16 +107,16 @@ func (u *User) saveUser(c *fiber.Ctx) error {
 }
 
 // user
-// @Summary      user
+// @Summary      users
 // @Description  Create User
-// @Tags         user
+// @Tags         users
 // @Accept       json
 // @Produce      json
 // @Param        user   body     dto.UserCreationRequest  true  "user_id, password, name(닉네임)"
 // @Success      200  {object}  dto.UserDetailResponse
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
 // @failure      500  {string}   string   "Internal Server Error"
-// @Router       /user [put]
+// @Router       /users [put]
 func (u *User) updateUser(c *fiber.Ctx) error {
 	userUpdateParam := dto.UserUpdateRequest{}
 	err := c.BodyParser(&userUpdateParam)
