@@ -25,23 +25,6 @@ func ToFilmDtoList(FilmList []entities.Film) (FilmDtoList []Film, err error) {
 	return
 }
 
-func ToVisitLogDtoList(visitLogList []entities.VisitLog) (visitLogDtoList []VisitLog, err error) {
-	for _, visitLog := range visitLogList {
-		visitLogInfo := VisitLog{
-			UserID: visitLog.UserID,
-			Name:   visitLog.Name,
-			Text:   visitLog.Text,
-		}
-		validate := validator.New()
-		err := validate.Struct(visitLogInfo)
-		if err != nil {
-			return visitLogDtoList, err
-		}
-		visitLogDtoList = append(visitLogDtoList, visitLogInfo)
-	}
-	return
-}
-
 func ToPhotoCutDtoList(photoCutList []entities.PhotoCut) (photoCutDtoList []PhotoCutDetailResponse, err error) {
 	for _, photoCut := range photoCutList {
 		photoCutDetail := PhotoCutDetailResponse{

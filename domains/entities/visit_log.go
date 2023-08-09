@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type VisitLog struct {
 	gorm.Model
-	UserID uint
+	UserID string
 	Name   string
 	Text   string
 }

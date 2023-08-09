@@ -162,6 +162,32 @@ definitions:
     - password
     - user_id
     type: object
+  dto.VisitLogCreationRequest:
+    properties:
+      name:
+        type: string
+      text:
+        type: string
+      user_id:
+        type: string
+    required:
+    - name
+    - text
+    - user_id
+    type: object
+  dto.VisitLogCreationResponse:
+    properties:
+      created_at:
+        type: string
+      log_id:
+        type: integer
+      name:
+        type: string
+      text:
+        type: string
+      user_id:
+        type: string
+    type: object
 host: api.grafi.cc
 info:
   contact:
@@ -620,6 +646,107 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.UserDetailResponse'
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: users
+      tags:
+      - users
+  /users/{user_id}/visit-logs:
+    get:
+      consumes:
+      - application/json
+      description: Find all visit logs from given user
+      parameters:
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserDetailResponse'
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Create User's visit log
+      parameters:
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: visit log 생성
+        in: body
+        name: visitLog
+        required: true
+        schema:
+          $ref: '#/definitions/dto.VisitLogCreationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.VisitLogCreationResponse'
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "409":
+          description: 'Conflict: 이미 id가 존재하는 경우'
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: users
+      tags:
+      - users
+  /users/{user_id}/visit-logs/{log_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Create User's visit log
+      parameters:
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: log_id
+        in: path
+        name: log_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
         "400":
           description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
           schema:
