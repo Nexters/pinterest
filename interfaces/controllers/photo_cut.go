@@ -64,7 +64,7 @@ func (pc *PhotoCut) getPhotoCut(c *fiber.Ctx) error {
 // @Tags         photo_cut
 // @Accept       json
 // @Produce      json
-// @Param        photo_cut_id   body     dto.PhotoCutCreationRequest  true  "title, text, link, image, film_id"
+// @Param        photo_cut   body     dto.PhotoCutCreationRequest  true  "title, text, link, image, film_id"
 // @Success      201  {object}  dto.PhotoCutDetailResponse
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
 // @failure      404              {string} string   "Conflict: 해당 id의 film이 존재하지 않는 경우"
@@ -102,7 +102,7 @@ func (pc *PhotoCut) savePhotoCut(c *fiber.Ctx) error {
 // @Tags         photo_cut
 // @Accept       json
 // @Produce      json
-// @Param        photo_cut   body     dto.PhotoCutUpdateRequest  true  "photo_cut_id, title, text, image, link, film_id"
+// @Param        photo_cut   body     dto.PhotoCutUpdateRequest  true  "photo_cut_id, title, text, image, link"
 // @Success      200  {string}  string
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
 // @failure      404              {string} string   "Conflict: 해당 id의 photo_cut이 존재하지 않는 경우"
@@ -131,7 +131,7 @@ func (pc *PhotoCut) editPhotoCut(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.SendString("필름 수정 성공")
+	return c.SendString("포토컷 수정 성공")
 }
 
 // photo_cut
@@ -140,7 +140,7 @@ func (pc *PhotoCut) editPhotoCut(c *fiber.Ctx) error {
 // @Tags         photo_cut
 // @Accept       json
 // @Produce      json
-// @Param        photo_cut   body     dto.PhotoCutUpdateRequest  true  "photo_cut_id, title, text, image, link, film_id"
+// @Param        photo_cut_id   path     uint  true  "photo_cut_id"
 // @Success      200  {string}  string
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
 // @failure      404              {string} string   "Conflict: 해당 id의 photo_cut이 존재하지 않는 경우"
@@ -163,5 +163,5 @@ func (pc *PhotoCut) deletePhotoCut(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.SendString("필름 삭제 성공")
+	return c.SendString("포토컷 삭제 성공")
 }

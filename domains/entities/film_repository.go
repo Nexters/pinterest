@@ -26,7 +26,7 @@ func (fr *FilmRepository) FindFilm(ctx context.Context, filmId uint) (film Film,
 }
 
 func (fr *FilmRepository) CountOrderByUserId(ctx context.Context, userId string) (count int64, err error) {
-	tx := fr.DB.Model(&Film{}).Where("user_id = ?", userId).Count(&count)
+	tx := fr.DB.Model(&Film{}).Where("user_id = ?", userId).Unscoped().Count(&count)
 	if tx.Error != nil {
 		return
 	}

@@ -23,6 +23,7 @@ func (pc *PhotoCutService) FindByPhotoCutId(ctx context.Context, photoCutId uint
 	}
 
 	photoCutResponse = dto.PhotoCutDetailResponse{
+		ID:        photoCut.ID,
 		Title:     photoCut.Title,
 		Text:      photoCut.Text,
 		Link:      photoCut.Link,
@@ -38,17 +39,12 @@ func (pc *PhotoCutService) CreatePhotoCut(
 	ctx context.Context,
 	photoCutCreationRequest dto.PhotoCutCreationRequest,
 ) (photoCutResponse dto.PhotoCutDetailResponse, err error) {
-	film, err := pc.frepo.FindFilm(ctx, photoCutCreationRequest.FilmID)
-	if err != nil {
-		return
-	}
-
 	photoCut := entities.PhotoCut{
 		Title:  photoCutCreationRequest.Title,
 		Text:   photoCutCreationRequest.Text,
 		Link:   photoCutCreationRequest.Link,
 		Image:  photoCutCreationRequest.Image,
-		FilmID: film.ID,
+		FilmID: photoCutCreationRequest.FilmID,
 	}
 
 	savedPhotoCut, err := pc.repo.SavePhotoCut(ctx, photoCut)
@@ -57,6 +53,7 @@ func (pc *PhotoCutService) CreatePhotoCut(
 	}
 
 	photoCutResponse = dto.PhotoCutDetailResponse{
+		ID:        savedPhotoCut.ID,
 		Title:     savedPhotoCut.Title,
 		Text:      savedPhotoCut.Text,
 		Link:      savedPhotoCut.Link,

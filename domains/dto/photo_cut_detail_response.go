@@ -3,6 +3,7 @@ package dto
 import "time"
 
 type PhotoCutDetailResponse struct {
+	ID        uint      `json:"photo_cut_id"`
 	Title     string    `json:"title"`
 	Text      string    `json:"text"`
 	Link      string    `json:"link"`

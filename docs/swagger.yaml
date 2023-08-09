@@ -54,6 +54,11 @@ definitions:
     - film_id
     - title
     type: object
+  dto.ImageUploadResponse:
+    properties:
+      presigned_url:
+        type: string
+    type: object
   dto.PhotoCutCreationRequest:
     properties:
       film_id:
@@ -82,6 +87,8 @@ definitions:
         type: integer
       link:
         type: string
+      photo_cut_id:
+        type: integer
       text:
         type: string
       title:
@@ -89,8 +96,6 @@ definitions:
     type: object
   dto.PhotoCutUpdateRequest:
     properties:
-      film_id:
-        type: integer
       image:
         type: string
       link:
@@ -102,7 +107,6 @@ definitions:
       title:
         type: string
     required:
-    - film_id
     - photo_cut_id
     type: object
   dto.UserCreationRequest:
@@ -246,7 +250,7 @@ paths:
       parameters:
       - description: user_id
         in: query
-        name: id
+        name: user_id
         required: true
         type: string
       produces:
@@ -400,6 +404,35 @@ paths:
       summary: 필름 ID로 필름 정보 가져오기
       tags:
       - film
+  /images/presigned-url:
+    get:
+      consumes:
+      - application/json
+      description: Get Presigned URL
+      parameters:
+      - description: filename
+        in: query
+        name: filename
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ImageUploadResponse'
+        "400":
+          description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: presigned URL 발급
+      tags:
+      - image
   /photo-cuts:
     post:
       consumes:
@@ -408,7 +441,7 @@ paths:
       parameters:
       - description: title, text, link, image, film_id
         in: body
-        name: photo_cut_id
+        name: photo_cut
         required: true
         schema:
           $ref: '#/definitions/dto.PhotoCutCreationRequest'
@@ -439,7 +472,7 @@ paths:
       - application/json
       description: Edit Photo Cut
       parameters:
-      - description: photo_cut_id, title, text, image, link, film_id
+      - description: photo_cut_id, title, text, image, link
         in: body
         name: photo_cut
         required: true
@@ -473,12 +506,11 @@ paths:
       - application/json
       description: Delete Photo Cut
       parameters:
-      - description: photo_cut_id, title, text, image, link, film_id
-        in: body
-        name: photo_cut
+      - description: photo_cut_id
+        in: path
+        name: photo_cut_id
         required: true
-        schema:
-          $ref: '#/definitions/dto.PhotoCutUpdateRequest'
+        type: integer
       produces:
       - application/json
       responses:

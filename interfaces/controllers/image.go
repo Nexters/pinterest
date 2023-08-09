@@ -18,6 +18,17 @@ func (i *Image) Bind() {
 	i.router.Get("/presigned-url", i.getPresignedUrl)
 }
 
+// image
+// @Summary      presigned URL 발급
+// @Description  Get Presigned URL
+// @Tags         image
+// @Accept       json
+// @Produce      json
+// @Param        filename   query   string  true  "filename"
+// @Success      200  {object}  dto.ImageUploadResponse
+// @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
+// @failure      500  {string}   string   "Internal Server Error"
+// @Router       /images/presigned-url [get]
 func (i *Image) getPresignedUrl(c *fiber.Ctx) error {
 	filename := c.Query("filename")
 	if filename == "" {
