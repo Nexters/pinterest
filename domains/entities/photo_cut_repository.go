@@ -36,6 +36,12 @@ func (pcr *PhotoCutRepository) SavePhotoCut(ctx context.Context, photoCut PhotoC
 		return PhotoCut{}, err
 	}
 
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
 	// film 조회
 	var film Film
 	err := tx.First(&film, "id = ?", photoCut.FilmID).Error
