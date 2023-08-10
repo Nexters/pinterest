@@ -1,0 +1,27 @@
+name: Auto Versioning with Release Please
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.20'
+
+      - name: Install Release Please
+        run: |
+          go install github.com/googleapis/release-please/cmd/release-please@latest
+
+      - name: Run Release Please
+        run: |
+          release-please --level patch --repo github.com/Nexters/pinterest
