@@ -4,12 +4,6 @@ on:
   push:
     branches:
       - main
-      
-permissions:
-  contents: write
-  pull-requests: write
-
-name: release-please
 
 jobs:
   release-please:
@@ -17,5 +11,5 @@ jobs:
     steps:
       - uses: google-github-actions/release-please-action@v3
         with:
-          release-type: node
+          release-type: go
           package-name: release-please-action
