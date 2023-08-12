@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run Release Please
+        id: release
         uses: google-github-actions/release-please-action@v3
         with:
           release-type: go
@@ -17,4 +18,4 @@ jobs:
 
       - name: Set Version Output
         id: set_version
-        run: echo "::set-output name=version::${{ steps.release.outputs.version }}"
+        run: echo "version=${{ steps.release.outputs.version }}" >> $GITHUB_OUTPUT
