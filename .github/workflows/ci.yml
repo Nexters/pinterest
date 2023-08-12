@@ -25,6 +25,7 @@ jobs:
         env:
           version: ${{ env.version }}
   build:
+    needs: release-please
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
