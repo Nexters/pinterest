@@ -50,9 +50,10 @@ func (i *ImageService) GeneratePresignedUrl(ctx context.Context, filename string
 	if err != nil {
 		return
 	}
-
+	imageUrl := fmt.Sprintf("https://%s.s3.%s.amazonaws.com/%s.%s", bucketName, region, imageName, ext)
 	imageUploadresponse = dto.ImageUploadResponse{
 		PresignedUrl: presignedUrl.URL,
+		ImageUrl:     imageUrl,
 	}
 
 	return
