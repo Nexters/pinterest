@@ -162,6 +162,25 @@ definitions:
     - password
     - user_id
     type: object
+  dto.UserUpdateRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      profile_img:
+        type: string
+      text:
+        type: string
+      theme_color:
+        type: string
+      user_id:
+        type: string
+    required:
+    - user_id
+    type: object
   dto.VisitLogCreationRequest:
     properties:
       name:
@@ -609,7 +628,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/dto.UserCreationRequest'
+          $ref: '#/definitions/dto.UserUpdateRequest'
       produces:
       - application/json
       responses:
