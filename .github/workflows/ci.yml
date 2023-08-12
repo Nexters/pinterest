@@ -45,3 +45,5 @@ jobs:
           VERSION: ${{ env.VERSION }}
         run: |
           echo "Building Docker image for version $VERSION ..."
+      - name: Test
+        run echo "feat test"
