@@ -36,6 +36,12 @@ func (f *FilmService) FindByFilmId(ctx context.Context, filmId uint) (filmDetail
 		UserID:        film.UserID,
 		PhotoCuts:     photoCuts,
 	}
+
+	if len(photoCuts) == 0 {
+		filmDetailResponse.PhotoCuts = []dto.PhotoCutDetailResponse{}
+	} else {
+		filmDetailResponse.PhotoCuts = photoCuts
+	}
 	return
 }
 

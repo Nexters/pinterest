@@ -18,6 +18,11 @@ func ToFilmDtoList(FilmList []entities.Film) (FilmDtoList []FilmDetailResponse, 
 		if err != nil {
 			return
 		}
+
+		if len(FilmInfo.PhotoCuts) == 0 {
+			FilmInfo.PhotoCuts = []PhotoCutDetailResponse{}
+		}
+
 		FilmDtoList = append(FilmDtoList, FilmInfo)
 	}
 	return
