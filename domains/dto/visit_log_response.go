@@ -10,8 +10,8 @@ type VisitLogResponse struct {
 	LogID     uint      `json:"log_id"`
 	UserID    string    `json:"user_id"`
 	CreatedAt time.Time `json:"created_at"`
-	Name      string
-	Text      string
+	Name      string    `json:"name"`
+	Text      string    `json:"text"`
 }
 
 func (v VisitLogResponse) FromEntity(log entities.VisitLog) VisitLogResponse {
