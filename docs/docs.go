@@ -115,7 +115,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dto.Film"
+                                "$ref": "#/definitions/dto.FilmDetailResponse"
                             }
                         }
                     },
@@ -870,29 +870,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "dto.Film": {
-            "type": "object",
-            "properties": {
-                "film_id": {
-                    "type": "integer"
-                },
-                "likes": {
-                    "type": "integer"
-                },
-                "order": {
-                    "type": "integer"
-                },
-                "photo_cut_count": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
-                }
-            }
-        },
         "dto.FilmCreationRequest": {
             "type": "object",
             "required": [

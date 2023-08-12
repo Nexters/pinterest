@@ -104,7 +104,7 @@ func (f *Film) saveFilm(c *fiber.Ctx) error {
 // @Accept       json
 // @Produce      json
 // @Param        user_id   query   string  true  "user_id"
-// @Success      200  {object}  []dto.Film
+// @Success      200  {object}  []dto.FilmDetailResponse
 // @failure      400              {string} string   "값을 누락하고 보냈거나, 값의 타입이 잘못된 경우"
 // @failure      500  {string}   string   "Internal Server Error"
 // @Router       /films [get]
