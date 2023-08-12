@@ -8,6 +8,8 @@ import (
 	"github.com/Nexters/pinterest/domains/errors"
 )
 
+const NickName = "grafi"
+
 type UserService struct {
 	repo *entities.UserRepository
 }
@@ -23,7 +25,7 @@ func (u *UserService) FindAll(ctx context.Context) (users []entities.User, err e
 
 func (u *UserService) CreateUser(ctx context.Context, userCreationRequest dto.UserCreationRequest) (userResponse dto.UserCreationResponse, err error) {
 	user := entities.User{
-		Name:     userCreationRequest.Name,
+		Name:     NickName,
 		ID:       userCreationRequest.UserID,
 		Password: userCreationRequest.Password,
 	}
