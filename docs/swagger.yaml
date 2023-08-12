@@ -1,20 +1,5 @@
 basePath: /
 definitions:
-  dto.Film:
-    properties:
-      film_id:
-        type: integer
-      likes:
-        type: integer
-      order:
-        type: integer
-      photo_cut_count:
-        type: integer
-      title:
-        type: string
-      user_id:
-        type: string
-    type: object
   dto.FilmCreationRequest:
     properties:
       title:
@@ -281,7 +266,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dto.Film'
+              $ref: '#/definitions/dto.FilmDetailResponse'
             type: array
         "400":
           description: 값을 누락하고 보냈거나, 값의 타입이 잘못된 경우

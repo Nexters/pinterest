@@ -2,23 +2,21 @@ package dto
 
 import (
 	"github.com/Nexters/pinterest/domains/entities"
-	"github.com/go-playground/validator"
 )
 
-func ToFilmDtoList(FilmList []entities.Film) (FilmDtoList []Film, err error) {
+func ToFilmDtoList(FilmList []entities.Film) (FilmDtoList []FilmDetailResponse, err error) {
 	for _, film := range FilmList {
-		FilmInfo := Film{
-			ID:            film.ID,
+		FilmInfo := FilmDetailResponse{
+			FilmID:        film.ID,
 			Title:         film.Title,
 			Order:         film.Order,
 			PhotoCutCount: film.PhotoCutCount,
 			Likes:         film.Likes,
 			UserID:        film.UserID,
 		}
-		validate := validator.New()
-		err := validate.Struct(FilmInfo)
+		FilmInfo.PhotoCuts, err = ToPhotoCutDtoList(film.PhotoCuts)
 		if err != nil {
-			return FilmDtoList, err
+			return
 		}
 		FilmDtoList = append(FilmDtoList, FilmInfo)
 	}
