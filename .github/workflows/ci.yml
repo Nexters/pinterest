@@ -17,27 +17,26 @@ jobs:
           package-name: release-please-action
 
       - name: Set Version Output
-        id: set_version
-        run: echo "VERSION=${{ steps.release.outputs.tag_name }}" >> $GITHUB_ENV
+        run: echo "VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
 
-  build:
-    needs: release-please
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+  # build:
+  #   needs: release-please
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v2
 
-      - name: Set Up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: '1.20'  # Set your desired Go version here
+  #     - name: Set Up Go
+  #       uses: actions/setup-go@v2
+  #       with:
+  #         go-version: '1.20'  # Set your desired Go version here
 
-      - name: Get Version from Release Please
-        id: get_version
-        run: echo "VERSION=${{ needs.release-please.outputs.version }}" >> $GITHUB_ENV
+  #     - name: Get Version from Release Please
+  #       id: get_version
+  #       run: echo "VERSION=${{ needs.release-please.outputs.version }}" >> $GITHUB_ENV
 
-      - name: Build Docker Image
-        env:
-          VERSION: ${{ env.VERSION }}
-        run: |
-          echo "Building Docker image for version $VERSION ..."
+  #     - name: Build Docker Image
+  #       env:
+  #         VERSION: ${{ env.VERSION }}
+  #       run: |
+  #         echo "Building Docker image for version $VERSION ..."
