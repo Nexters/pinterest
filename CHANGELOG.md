@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.0](https://github.com/Nexters/pinterest/compare/v1.0.0...v1.1.0) (2023-08-12)
+
+
+### Features
+
+* test ([79734ee](https://github.com/Nexters/pinterest/commit/79734ee57d15a710da970eea0802b09dcee47520))
+* test ([da0c88b](https://github.com/Nexters/pinterest/commit/da0c88bc5e1b36595b8781d41dc71ee6bda8f5fa))
+* test ([b05ae66](https://github.com/Nexters/pinterest/commit/b05ae6679a23b293bea57a8cf732ecf816b98e07))
+
 ## 1.0.0 (2023-08-12)
 
 
