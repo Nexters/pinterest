@@ -18,8 +18,9 @@ jobs:
 
       - name: Set Version Output
         id: set_version
-        run: echo "version=${{ steps.release.outputs.version }}" >> $GITHUB_ENV
-
+        run: echo "VERSION=${{ steps.release.outputs.version }}" >> $GITHUB_ENV
+        shell: bash
+        
       - name: Get Version
         run: echo "Version is $version"
         env:
