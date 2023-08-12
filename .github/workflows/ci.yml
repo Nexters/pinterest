@@ -6,9 +6,26 @@ on:
       - main
 
 jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Release Please
+        id: release
+        uses: google-github-actions/release-please-action@v3
+        with:
+          release-type: go
+          package-name: release-please-action
+
+      - name: Set Version Output
+        id: set_version
+        run: echo "version=${{ steps.release.outputs.version }}" >> $GITHUB_ENV
+
+      - name: Get Version
+        run: echo "Version is $version"
+        env:
+          version: ${{ env.version }}
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -20,14 +37,10 @@ jobs:
 
       - name: Get Version from Release Please
         id: get_version
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const version = github.workflow_run.outputs.version;
-            core.setOutput('VERSION', version);
+        run: echo "VERSION=${{ needs.release-please.outputs.version }}" >> $GITHUB_ENV
 
       - name: Build Docker Image
         env:
-          VERSION: ${{ steps.get_version.outputs.VERSION }}
+          VERSION: ${{ env.VERSION }}
         run: |
           echo "Building Docker image for version $VERSION ..."
