@@ -10,16 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Run Release Please
-        uses: ./.github/workflows/release-please.yml
-
-      - name: Set up Go
+      - name: Set Up Go
         uses: actions/setup-go@v2
         with:
-          go-version: '1.20'
+          go-version: '1.20'  # Set your desired Go version here
 
       - name: Get Version from Release Please
         id: get_version
