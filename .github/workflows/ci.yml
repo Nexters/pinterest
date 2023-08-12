@@ -23,7 +23,7 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            const version = context.payload.workflow_run.outputs.version;
+            const version = github.workflow_run.outputs.version;
             core.setOutput('VERSION', version);
 
       - name: Build Docker Image
