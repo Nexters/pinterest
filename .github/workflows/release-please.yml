@@ -14,5 +14,5 @@ jobs:
           package-name: release-please-action
       - uses: actions/checkout@v2
       - name: Set Version Output
-        if: ${{ steps.release.outputs.release_created }}
+        # if: ${{ steps.release.outputs.release_created }}
         run: echo "VERSION=${{ steps.release.outputs.major }}" >> $GITHUB_ENV
