@@ -955,6 +955,9 @@ const docTemplate = `{
         "dto.ImageUploadResponse": {
             "type": "object",
             "properties": {
+                "image_url": {
+                    "type": "string"
+                },
                 "presigned_url": {
                     "type": "string"
                 }
