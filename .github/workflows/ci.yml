@@ -21,11 +21,16 @@ jobs:
         with:
           go-version: '1.20'
 
-      - name: Get Git Version
-        id: version
-        run: echo "::set-output name=VERSION::$(git describe --tags --abbrev=0)"
+      - name: Get Version from Release Please
+        id: get_version
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const version = context.payload.workflow_run.outputs.version;
+            core.setOutput('VERSION', version);
 
-      - name: Test
+      - name: Build Docker Image
+        env:
+          VERSION: ${{ steps.get_version.outputs.VERSION }}
         run: |
-          IMAGE_TAG=${{ steps.version.outputs.VERSION }}
-          echo "Image tag: $IMAGE_TAG"
+          echo "Building Docker image for version $VERSION ..."
