@@ -8,9 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: google-github-actions/release-please-action@v3
+        id: release
         with:
           release-type: go
           package-name: release-please-action
-
+      - uses: actions/checkout@v2
       - name: Set Version Output
+        if: ${{ steps.release.outputs.release_created }}
         run: echo "VERSION=${{ steps.release.outputs.major }}" >> $GITHUB_ENV
