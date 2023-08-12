@@ -17,7 +17,7 @@ jobs:
           package-name: release-please-action
 
       - name: Set Version Output
-        run: echo "VERSION=${{ steps.release.outputs.release-please-action--tag_name }}" >> $GITHUB_ENV
+        run: echo "VERSION=${{ steps.release.outputs.major }}" >> $GITHUB_ENV
 
   # build:
   #   needs: release-please
