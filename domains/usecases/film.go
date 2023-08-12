@@ -72,7 +72,7 @@ func (f *FilmService) CreateFilm(ctx context.Context, filmCreationRequest dto.Fi
 	return
 }
 
-func (f *FilmService) FindAllFilms(ctx context.Context, userId string) (filmList []dto.Film, err error) {
+func (f *FilmService) FindAllFilms(ctx context.Context, userId string) (filmList []dto.FilmDetailResponse, err error) {
 	films, err := f.repo.FindAllFilmsInOrder(ctx, userId)
 	if err != nil {
 		return
