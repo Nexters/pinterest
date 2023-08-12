@@ -116,7 +116,7 @@ func (u *User) saveUser(c *fiber.Ctx) error {
 
 // user
 // @Summary      users
-// @Description  Create User
+// @Description  Update User
 // @Tags         users
 // @Accept       json
 // @Produce      json

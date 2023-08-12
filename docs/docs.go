@@ -578,7 +578,7 @@ const docTemplate = `{
         },
         "/users": {
             "put": {
-                "description": "Create User",
+                "description": "Update User",
                 "consumes": [
                     "application/json"
                 ],
