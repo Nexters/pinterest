@@ -602,7 +602,7 @@ paths:
     put:
       consumes:
       - application/json
-      description: Create User
+      description: Update User
       parameters:
       - description: user_id, password, name(닉네임)
         in: body
