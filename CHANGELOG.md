@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.1.1](https://github.com/Nexters/pinterest/compare/v1.1.0...v1.1.1) (2023-08-12)
+
+
+### Bug Fixes
+
+* 🐛 add json tag ([d56399e](https://github.com/Nexters/pinterest/commit/d56399e005dd40d46ed6eea1498f3ade0a16e456))
+* 🐛 add json tag to visit-log ([a9232e5](https://github.com/Nexters/pinterest/commit/a9232e576c87c3b24d94f5d59edf720351f8d2ab))
+* 🐛 docs ([238b5cd](https://github.com/Nexters/pinterest/commit/238b5cd13e39836439bcaa2f46d9a4ab7e50ad4f))
+* 🐛 remove email from user creation response ([0ce1c59](https://github.com/Nexters/pinterest/commit/0ce1c597525c7874114cbdad0c07ad68aa92b559))
+* 🐛 return null for empty string in userDetail ([3ac39a6](https://github.com/Nexters/pinterest/commit/3ac39a6e9f2d2b100b20511b379f82ffa80e9a42))
+* 🐛 set default nickname ([71b5699](https://github.com/Nexters/pinterest/commit/71b5699d0767fcde445f18727125661c9e379b88))
+* 🐛 update user swagger ([33d3343](https://github.com/Nexters/pinterest/commit/33d3343ef97b1b4074cacecb20ab283ec5adf24e))
+* change photo cut result (null to empty array) ([938a756](https://github.com/Nexters/pinterest/commit/938a756c2cbfa10aff2e14a81f4caa5132ad908c))
+* find all films ([a59ebfc](https://github.com/Nexters/pinterest/commit/a59ebfc0d938c0c7d2f8789eed7103778729d976))
+* images ([5927e8c](https://github.com/Nexters/pinterest/commit/5927e8cdab22b97ffd693fd4ba2a04a615b8aa4f))
+* swagger ([8ec19de](https://github.com/Nexters/pinterest/commit/8ec19de176a9491c3945c02a87d75a664242c5bb))
+* swagger ([a90907b](https://github.com/Nexters/pinterest/commit/a90907b552ad2fcc2385daff405c68b56887fe15))
+
 ## [1.1.0](https://github.com/Nexters/pinterest/compare/v1.0.0...v1.1.0) (2023-08-12)
 
 
